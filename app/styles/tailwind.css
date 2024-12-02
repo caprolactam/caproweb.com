@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+  src: url('/fonts/inter.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Commit Mono';
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+  src: url('/fonts/commit-mono.woff2') format('woff2');
+}
+
+@layer base {
+  :root,
+  .light {
+    /* Start: Shadcn Theme */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+    /* End: Shadcn Theme */
+
+    --sand1: 60 20% 99%;
+    --sand2: 60 8% 97%;
+    --sand3: 30 7% 94%;
+    --sand4: 40 6% 91%;
+    --sand5: 45 6% 88%;
+    --sand6: 45 5% 85%;
+    --sand7: 48 5% 80%;
+    --sand8: 51 5% 72%;
+    --sand9: 60 3% 54%;
+    --sand10: 60 2% 50%;
+    --sand11: 60 3% 38%;
+    --sand12: 48 8% 12%;
+
+    --add-bg: 139 47% 93%;
+    --add-text: 154 60% 32%;
+    --remove-bg: 357 90% 96%;
+    --remove-text: 358 65% 49%;
+    --link: 220 83.7% 48%;
+  }
+  .dark {
+    /* Start: Shadcn Theme */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    /* End: Shadcn Theme */
+
+    --sand1: 60 3% 6%;
+    --sand2: 60 2% 10%;
+    --sand3: 60 1% 13%;
+    --sand4: 60 2% 16%;
+    --sand5: 60 3% 19%;
+    --sand6: 45 4% 22%;
+    --sand7: 48 4% 28%;
+    --sand8: 43 4% 37%;
+    --sand9: 47 4% 42%;
+    --sand10: 53 3% 47%;
+    --sand11: 45 5% 69%;
+    --sand12: 60 6% 93%;
+
+    --add-bg: 154 55% 15%;
+    --add-text: 151 65% 54%;
+    --remove-bg: 348 68% 19%;
+    --remove-text: 2 100% 79%;
+    --link: 213 100% 61.2%;
+  }
+
+  * {
+    @apply border-brand-6;
+  }
+
+  .anchor {
+    @apply underline-offset-2 hover:underline;
+  }
+}
+
+@layer components {
+  a,
+  input:not([disabled]),
+  select:not([disabled]),
+  textarea:not([disabled]),
+  button:not([disabled]) {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-brand-12 focus-visible:ring focus-visible:ring-brand-1;
+  }
+}

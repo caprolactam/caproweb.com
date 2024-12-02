@@ -1,0 +1,8 @@
+---
+title: Controls
+createdAt: 2024-04-07
+description: Controls got inspiration from apple homepage.
+keywords:
+  - framer-motion
+  - animation
+---

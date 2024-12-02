@@ -1,0 +1,115 @@
+:is(h1, h2, h3, h4, h5, h6) {
+  & a {
+    @apply inline-block size-0 translate-x-1 translate-y-px;
+  }
+  & .icon-link {
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-link'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/%3E%3C/svg%3E");
+    mask-size: cover;
+    @apply invisible inline-block size-5 bg-brand-11;
+  }
+}
+
+:is(h1, h2, h3, h4, h5, h6):hover {
+  & .icon-link {
+    @apply visible;
+  }
+}
+
+.footnotes {
+  @apply text-sm text-brand-12;
+}
+
+.footnotes[data-footnotes]::before {
+  content: '';
+  @apply relative my-[2.5em] flex h-px w-full bg-brand-6;
+}
+
+[data-footnote-ref] {
+  @apply underline-offset-4;
+}
+
+/* Place `[` and `]` around footnote references. */
+[data-footnote-ref]::before {
+  content: '[';
+}
+
+[data-footnote-ref]::after {
+  content: ']';
+}
+
+.line {
+  position: relative;
+  padding-inline-end: 1rem;
+}
+
+.md-prose {
+  position: relative;
+}
+
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  /* background-color: var(--shiki-dark-bg); */
+  /* Optional, if you also want font styles */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+html.dark .shiki,
+html.dark .shiki pre {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+pre[data-filename]::before {
+  content: attr(data-filename);
+  padding-bottom: 0.8571429em;
+  margin-bottom: 0.8571429em;
+  padding-left: 3rem;
+  @apply sticky left-0 top-0 block border-b border-brand-6 text-brand-11;
+}
+
+pre[data-filename]::after {
+  content: '';
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px' fill='%235f6368'%3E%3Cpath d='M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z'/%3E%3C/svg%3E");
+  mask-size: cover;
+  @apply absolute left-4 top-4 size-4 bg-brand-11;
+}
+
+[data-line-number]::before {
+  /* background-color: var(--background-color, #fff); */
+  content: attr(data-line-number);
+  background-color: var(--shiki-dark-bg);
+  @apply sticky left-0 top-0 inline-block w-12 pe-4 text-end text-brand-11;
+}
+
+.light [data-line-number]::before {
+  background-color: #fff;
+}
+
+pre[data-diff='true'] [data-line-number]::before {
+  width: 3.5rem;
+}
+
+.line[data-inserted='true'],
+.line[data-deleted='true'] {
+  width: 100%;
+  display: inline-block;
+}
+
+.line[data-inserted='true'] {
+  @apply bg-brand-add-bg;
+}
+.line[data-deleted='true'] {
+  @apply bg-brand-remove-bg;
+}
+
+.line[data-inserted='true'][data-line-number]::before {
+  content: '+ ' attr(data-line-number);
+  @apply bg-brand-add-bg text-brand-add-text;
+}
+
+.line[data-deleted='true'][data-line-number]::before {
+  content: '- ' attr(data-line-number);
+  @apply bg-brand-remove-bg text-brand-remove-text;
+}

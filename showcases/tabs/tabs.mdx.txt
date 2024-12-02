@@ -1,0 +1,20 @@
+---
+title: Tabs
+createdAt: 2024-04-07
+description: Tabs and some scripts.
+keywords:
+  - css
+  - animation
+---
+
+import { Canvas, Meta } from '@storybook/blocks'
+import * as TabsStories from './tabs.stories.tsx'
+
+<Meta of={TabsStories} />
+
+# Checkbox
+
+A checkbox is a square box that can be activated or deactivated when ticked.
+Use checkboxes to select one or more options from a list of choices.
+
+<Canvas of={TabsStories.Primary} />

@@ -1,0 +1,34 @@
+[demo-tabs-root] {
+  min-width: 0;
+}
+
+[demo-tabs-container] {
+  position: relative;
+  overflow-x: hidden;
+}
+
+[demo-tabs] {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  touch-action: none;
+}
+
+[demo-tabs-hidden] {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border: 0;
+  position: absolute;
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0);
+  @apply bg-brand-add-text;
+}
+
+[demo-tab] {
+  user-select: none;
+  white-space: nowrap;
+  @apply px-2 md:px-4;
+}

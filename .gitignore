@@ -1,0 +1,32 @@
+node_modules
+.DS_store
+
+/build
+.env
+.cache
+
+# Easy way to create temporary files/folders that won't accidentally be added to git
+*.local.*
+
+# cloudflare
+.dev.vars
+worker-configuration.d.ts
+/.wrangler/
+
+# tests
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/coverage
+*storybook.log
+/storybook-static
+
+# app
+/app/components/icons
+/images
+/public/sitemap.xml
+/prebuild
+
+# react-router
+.react-router/
+
