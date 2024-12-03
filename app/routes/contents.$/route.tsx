@@ -9,7 +9,9 @@ import { datetimeFormat } from '#app/utils/misc.ts'
 import { type Route } from './+types/route'
 import { validateSlug, getMdxSource } from './api.server.ts'
 
-export const meta = ({ data, matches }: Route.MetaArgs) => {
+export const meta = ({ data, ...props }: Route.MetaArgs) => {
+  // rr@7.0.2では、ここで分割代入しないと型が機能しない問題
+  const { matches } = props
   const properties: MetaDescriptor[] = []
 
   if (data) {
@@ -29,6 +31,7 @@ export const meta = ({ data, matches }: Route.MetaArgs) => {
   }
 
   return matches.reduceRight((acc, match) => {
+    if (match == null) return acc
     for (const parentMeta of match.meta) {
       const index = acc.findIndex(
         (meta) =>
