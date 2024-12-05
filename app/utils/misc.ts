@@ -7,28 +7,8 @@ import { extendedTheme } from './extended-theme.ts'
 export const datetimeFormat = (date: Date) =>
   `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 
-function formatColors() {
-  const colors = []
-  for (const [key, color] of Object.entries(extendedTheme.colors)) {
-    if (typeof color === 'string') {
-      colors.push(key)
-    } else {
-      const colorGroup = Object.keys(color).map((subKey) =>
-        subKey === 'DEFAULT' ? '' : subKey,
-      )
-      colors.push({ [key]: colorGroup })
-    }
-  }
-  return colors
-}
-
 const customTwMerge = extendTailwindMerge({
   extend: {
-    theme: {
-      colors: formatColors(),
-      opacity: Object.keys(extendedTheme.opacity),
-      borderRadius: Object.keys(extendedTheme.borderRadius),
-    },
     classGroups: {
       ease: Object.keys(extendedTheme.transitionTimingFunction),
     },
