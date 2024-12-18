@@ -46,5 +46,7 @@ export const extendedTheme = {
     'ease-in-out-quint': 'cubic-bezier(.86, 0, .07, 1)',
     'ease-in-out-expo': 'cubic-bezier(1, 0, 0, 1)',
     'ease-in-out-circ': 'cubic-bezier(.785, .135, .15, .86)',
+    // ease
+    ease: 'ease',
   },
 } satisfies Config['theme']

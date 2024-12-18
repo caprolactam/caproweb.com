@@ -32,7 +32,7 @@ export function parseMarkdownFrontmatter(): Plugin {
     async load(id) {
       if (id === resolvedVirtualModuleId) {
         const metadataProvider = new MetadataProvider()
-        const markdownPaths = await fg.glob('contents/**/*.md')
+        const markdownPaths = await fg.glob('contents/**/*.{md,mdx}')
 
         await Promise.all(
           markdownPaths.map(async (path) => {

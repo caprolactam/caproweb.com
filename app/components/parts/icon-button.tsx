@@ -2,7 +2,12 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { forwardRef } from 'react'
 import { Link as RemixLink } from 'react-router'
 import { cn } from '#app/utils/misc.ts'
-import { Tooltip, TooltipProvider } from './tooltip.tsx'
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from './tooltip.tsx'
 
 export const iconButtonVariants = cva(
   [
@@ -20,7 +25,7 @@ export const iconButtonVariants = cva(
       },
       elementType: {
         button:
-          'disabled:pointer-events-none disabled:bg-brand-9/12 disabled:text-brand-12/38',
+          'disabled:pointer-events-none disabled:bg-brand-12/12 disabled:text-brand-12/38',
         link: '',
       },
       variant: {
@@ -56,8 +61,9 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProp>(
   ) {
     return (
       <TooltipProvider delayDuration={350}>
-        <Tooltip label={label}>
-          <button
+        <Tooltip>
+          <TooltipTrigger
+            ref={ref}
             {...props}
             className={cn(
               iconButtonVariants({
@@ -70,11 +76,11 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProp>(
             disabled={disabled}
             type={type}
             aria-label={label}
-            ref={ref}
           >
             {children}
             <TouchTarget />
-          </button>
+          </TooltipTrigger>
+          <TooltipContent>{label}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     )
@@ -92,23 +98,26 @@ const IconLink = forwardRef<HTMLAnchorElement, IconLinkProp>(function IconLink(
 ) {
   return (
     <TooltipProvider delayDuration={350}>
-      <Tooltip label={label}>
-        <RemixLink
-          {...props}
-          className={cn(
-            iconButtonVariants({
-              elementType: 'link',
-              size,
-              variant,
-            }),
-            className,
-          )}
-          aria-label={label}
-          ref={ref}
-        >
-          {children}
-          <TouchTarget />
-        </RemixLink>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <RemixLink
+            {...props}
+            className={cn(
+              iconButtonVariants({
+                elementType: 'link',
+                size,
+                variant,
+              }),
+              className,
+            )}
+            aria-label={label}
+            ref={ref}
+          >
+            {children}
+            <TouchTarget />
+          </RemixLink>
+        </TooltipTrigger>
+        <TooltipContent>{label}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )
@@ -126,23 +135,26 @@ const IconAnchor = forwardRef<HTMLAnchorElement, IconAnchorProp>(
   ) {
     return (
       <TooltipProvider delayDuration={350}>
-        <Tooltip label={label}>
-          <a
-            {...props}
-            className={cn(
-              iconButtonVariants({
-                elementType: 'link',
-                size,
-                variant,
-              }),
-              className,
-            )}
-            aria-label={label}
-            ref={ref}
-          >
-            {children}
-            <TouchTarget />
-          </a>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <a
+              {...props}
+              className={cn(
+                iconButtonVariants({
+                  elementType: 'link',
+                  size,
+                  variant,
+                }),
+                className,
+              )}
+              aria-label={label}
+              ref={ref}
+            >
+              {children}
+              <TouchTarget />
+            </a>
+          </TooltipTrigger>
+          <TooltipContent>{label}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     )

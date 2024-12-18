@@ -3,6 +3,7 @@ import * as runtime from 'react/jsx-runtime'
 import { data, type MetaDescriptor } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { Title } from '#app/components/parts/title.tsx'
+import { TabsDemo } from '#app/components/showcases/tabs/index.tsx'
 import { GeneralErrorBoundary } from '#app/components/templates/error-boundary.tsx'
 import { metadatasSchema } from '#app/utils/markdown.server.ts'
 import { datetimeFormat } from '#app/utils/misc.ts'
@@ -114,7 +115,7 @@ export default function Route({
         createdAt={frontmatter.createdAt}
         updatedAt={frontmatter.updatedAt}
       />
-      <MDXContent components={{}} />
+      <MDXContent components={{ Tabs: TabsDemo }} />
     </div>
   )
 }

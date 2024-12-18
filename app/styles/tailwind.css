@@ -133,6 +133,7 @@
 }
 
 @layer components {
+  *[tabindex='0'],
   a,
   input:not([disabled]),
   select:not([disabled]),
