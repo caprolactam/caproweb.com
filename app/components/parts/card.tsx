@@ -7,7 +7,7 @@ const cardVariants = cva('', {
   variants: {
     padding: {
       sm: 'p-2',
-      md: 'p-4',
+      md: 'p-2 md:p-4',
       lg: 'p-6',
     },
   },
@@ -35,3 +35,19 @@ export const Card = React.forwardRef<React.ElementRef<'div'>, CardProps>(
     )
   },
 )
+
+export function ShowcaseCard({
+  children,
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
+  return (
+    <Card
+      {...props}
+      padding='md'
+      className={cn('not-prose my-[1.25em] rounded-md bg-brand-2', className)}
+    >
+      {children}
+    </Card>
+  )
+}

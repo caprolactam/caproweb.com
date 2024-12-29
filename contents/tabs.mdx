@@ -1,10 +1,194 @@
 ---
-title: タブのアニメーション
-createdAt: 1999-01-01
-description: タブのアニメーション実装に関するメモ
+title: タブ
+createdAt: 2024-12-27
+description: タブのアクティブインジケーターにアニメーションを実装する
 keywords:
   - animation
   - web
 ---
 
-<Tabs />
+タブのアクティブインジケーターにアニメーションを実装するにはいろいろな方法があり得ます。では、それぞれの方法を用いることにはどのような利点があるのでしょうか。
+
+この記事では以下の三つの方法[^implements]で実装を行いました。
+
+1. [リストの子を動かす](#list-indicator)
+2. [タブごとの子を動かす](#trigger-indicator)
+3. [複製したリストをインジケーターとみなす](#hidden-list)
+
+本記事ではそれぞれの方法につき見ていき、最後にどの方法を用いるべきか検討します。
+
+なお文中で用いている「タブ」はUIコンポーネントとしてのタブ全体ではなく、タブ全体を構成しそれぞれのコンテンツと結び付けられた各ボタンを意味します。「リスト」はすべての「タブ」の集まりです。
+
+## リストの子を動かす ||list-indicator||
+
+インジケーターをリストの子コンポーネントとしてレンダーし、アクティブになったタブに存在するであろうインジケーターのサイズ・位置に一致させるようにアニメーションを行います。
+
+変更するプロパティ: `width`, `height`, `transform`
+
+<ShowcaseCard>
+  <TabsByListIndicatorDemo />
+</ShowcaseCard>
+
+```tsx
+<Root>
+  <List className='relative'>
+    <Tab>Chrome</Tab>
+    <Tab>Edge</Tab>
+    <Indicator
+      className='absolute inset-0 size-0 bg-black'
+      style={{
+        height: '3px',
+        width: '100px',
+        transform: 'translateX(100px)',
+      }}
+    />
+  </List>
+</Root>
+```
+
+アニメーションの見た目通りに素直に実装したものです。上記コード例からわかるようにシンプルなHTML構造が特徴です。
+
+注意する点としては、インジケーターの絶対位置とアニメーションの移動量の間で同期が必要であり、壊れやすいまたは絶対位置を取得する分のコード量が増えるということです。（たとえば、インジケーターの絶対位置指定が`right: 0;`のみであるにもかかわらずアニメーションの側では`left: 0;`であることを前提に`translateX()`を使用する場合を考えよ。）
+
+## タブごとの子を動かす ||trigger-indicator||
+
+インジケーターをそれぞれのタブの子コンポーネントしてレンダーし、以前アクティブであったインジケーターのサイズ・位置から自身のサイズ・位置へ戻ってくるようにアニメーションを行います。
+
+変更するプロパティ: `transform`
+
+<ShowcaseCard>
+  <TabsByIndicatorDemo />
+</ShowcaseCard>
+
+```tsx
+<Root>
+  <List>
+    <Tab className='relative'>
+      <Indicator className='absolute inset-x-0 bottom-0 h-px w-full bg-black' />
+      Chrome
+    </Tab>
+    <Tab className='relative'>
+      <Indicator className='absolute inset-x-0 bottom-0 h-px w-full bg-black' />
+      Edge
+    </Tab>
+  </List>
+</Root>
+```
+
+アニメーションにはアクティブ状態を切り替える二つのインジケーターの相対的なサイズ・位置関係のみが関心の対象となります。つまりインジケーターがアニメーション完了後にどのようなサイズ・位置にあるか、スタイルがどうなっているかはブラウザ（HTMLやCSS）が計算してくれます。これは二つのメリットを提供します。
+
+- インジケーターのスタイルとアニメーションの実行を分離することができます。つまり、インジケーターを一般化したコンポーネントとして提供し、様々なスタイルを適用させることが容易になります。[^motion]もっとも、通常のアプリではこうした一般化のメリットはあまりないかもしれません。
+
+- javascriptを無効にしている場合やhydrate前でもアクティブインジケーターを表示できます。またhydrate前後でアクティブインジケーターがちらつくということもありません。ただし他の方法でもそれぞれのタブにインジケーターを用意しておきjavascriptが無効のときはそれらのインジケーターを表示、有効になった後でそれらのインジケーターを`opacity: 0;`に切り替えることで対応可能です。今回はすべての方法でこの回避策を採用しています。
+
+## 複製したリストをインジケーターとみなす ||hidden-list||
+
+複製したリストをインジケーターとみなし、クリッピング領域を変更することでアクティブになったタブが持っているであろうインジケーターのサイズ・位置に一致させるようにアニメーションを行います。
+
+変更するプロパティ：`clip-path`
+
+<ShowcaseCard>
+  <TabsByHiddenListDemo />
+</ShowcaseCard>
+
+```tsx
+<Root className='relative'>
+  <List>
+    <Tab>Chrome</Tab>
+    <Tab>Edge</Tab>
+  </List>
+  <List
+    className='absolute inset-0 bg-black'
+    style={{ clipPath: 'inset(0 50% 0 0)' }}
+  >
+    <Tab>Chrome</Tab>
+    <Tab>Edge</Tab>
+  </List>
+</Root>
+```
+
+上記デモにおいてインジケーターのタイプが下線またはバックグラウンドの場合、リストの子を動かす方法と動作の方針として変わらないように見えます。
+
+しかし、この方法が強力なのは**1. インジケーターがタブのラベルの背景である**、**2. タブのラベルがインジケーターの位置に応じて`color`を変更する**という二つの要件を満たす（上記デモにおけるテキスト反転をインジケーターのタイプに持つ）場合です。この場合インジケーターの移動に応じてラベルが色を変えるアニメーションを正確に実現可能です。なお他の方法でもインジケーターの構成次第で`mix-blend-mode`で代替できるようです。
+
+## まとめ
+
+さて以上を踏まえてどの方法を用いるべきでしょうか。パフォーマンス、可能なアニメーションという観点から整理してみましょう。
+
+### パフォーマンス
+
+いずれの方法でも[CSSトランジション](https://developer.mozilla.org/docs/Web/CSS/CSS_transitions/Using_CSS_transitions)や[ウェブアニメーション API](https://developer.mozilla.org/docs/Web/API/Web_Animations_API)を用いてアニメーションを実現できます。
+
+では変更するプロパティはどうでしょうか。[CSS 座標変換（`transform`）](https://developer.mozilla.org/en-US/docs/Web/Performance/Fundamentals#specific_coding_tips_for_application_performance)のみを使用するタブごとの子を動かす方法はハードウェアアクセラレーションを最大限利用できます。[^changing-property]`clip-path`も[ハードウェアアクセラレーションを利用できる](https://developer.chrome.com/blog/hardware-accelerated-animations)ため複製したリストをインジケーターとみなす方法も同様に有効です。
+
+一方で[DOMサイズを減らす](https://developer.chrome.com/docs/lighthouse/performance/dom-size)という観点に立てば、リストの子を動かす方法が最もDOMツリーを小さく保てるのに対して、複製したリストをインジケーターとみなす方法は無駄が大きくなるということになります。[^reduce-dom-size]
+
+もっともこれらは一般論であり実際の開発に応じて計測・比較されるべき問題です。
+
+### 可能なアニメーション
+
+複製したリストをインジケーターとみなす方法が一定のパターンに対して機能することは説明したとおりです。一方でそれ以外のパターンの場合、いずれの方法でもほとんど実現可能なはずです。
+
+## Appendix
+
+上記以外で実装のときに考えたことをまとめています。
+
+### アニメーションのタイミング
+
+再生時間は200ms、イージング関数は`ease-out`にしました。
+
+再生時間は、アニメーションが大きくないこと、スクリーン上の出入りを伴うものでないことから150〜350ms程度が妥当と思われます。たとえば[Material Web](https://material-web.dev/components/tabs/)では250ms、[Vercel](https://vercel.com)では150msです。また[Stripe Blog](https://stripe.com/blog)では350msでアニメーションを強調しています。ただし速すぎる値は、移動するタブ間の距離が大きいと不自然に感じられます。
+
+ユーザーは自分の選択（クリックやキーボード入力）に対して速やかに応答が得られることを期待するはずです。そのためにはアクティブインジケーターが速やかに動き始める`ease-out`が最適です。たとえばMaterial Webでは`cubic-bezier(0.3,0,0,1)`、Vercelも同様に初めが速く終わりに緩やかなグラフを描きます。
+
+<div className='not-prose'>
+  <img
+    src='https://image.caproweb.com/images/vercel-tabs-transition.avif'
+    alt='Vercelにおけるタブアニメーションのタイミング'
+    loading='lazy'
+  />
+  <span
+    aria-hidden='true'
+    className='mt-1 block text-sm'
+  >
+    Vercelにおけるタブアニメーションのタイミング
+  </span>
+</div>
+
+[React Spectrum](https://react-spectrum.adobe.com/react-spectrum/Tabs.html)では`ease-in-out`を用いているようです。私のタブで試した感想としては100msから150ms程度で`ease-in-out`を用いる場合、再生時間の短さを感じさせません。一方でそれ以上の再生時間の場合、ラグが生じているような違和感があります。
+
+<div className='not-prose'>
+  <img
+    src='https://image.caproweb.com/images/react-spectrum-tabs-transition.avif'
+    alt='React Spectrumにおけるタブアニメーションのタイミング'
+    loading='lazy'
+  />
+  <span
+    aria-hidden='true'
+    className='mt-1 block text-sm'
+  >
+    React Spectrumにおけるタブアニメーションのタイミング
+  </span>
+</div>
+
+### 重ね合わせの順序
+
+タブおよびインジケーターがシンプルに構成・スタイリングされる場合は問題ないのですが、インジケーターをラベル幅に合わせるなどタブの子要素を入れ子にしていくと意図しない要素の重なり合いが生じやすいです。
+
+[重ね合わせコンテキスト](https://developer.mozilla.org/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context)がどの要素で作成されているのか、その要素の[位置指定の有無・出現順](https://developer.mozilla.org/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_without_z-index)、[z-indexの数値](https://developer.mozilla.org/jdocs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Using_z-index)をもとに順位決定を行います。不要な位置指定は取り除く（`position: static;`に保つ）ことで順位の決定がわかりやすくなります。
+
+また`z-index`を指定することでタブ以外の要素と干渉しやすくなるため、タブの境界部分（Radix UIにおける[`<Tabs.Root>`や`<Tabs.List>`](https://www.radix-ui.com/primitives/docs/components/tabs#api-reference)など）で[`isolation: isolate;`](https://developer.mozilla.org/docs/Web/CSS/isolation)を用いて重ね合わせコンテキストを独立させておくと良いです。
+
+### アクセシビリティ
+
+ベースライブラリには[`@radix-ui/react-tabs`](https://www.radix-ui.com/primitives/docs/components/tabs)を用いてアクセシビリティを確保しています。
+
+複製したリストをインジケーターとみなす方法では、同じタブが存在することに注意します。アニメーションの役割をもつ側のタブでは`aria-hidden="true"`かつ`tabindex="-1"`に指定し支援技術からコンテンツを隠すようにします。
+
+[^implements]: 実装と記事作成にあたり[Material Web](https://material-web.dev/components/tabs/)、[Paco Coursey](https://paco.me/craft/tabs)、[Emil Kowalski](https://emilkowal.ski/ui/the-magic-of-clip-path)に大きく触発されています。なお取り上げられませんでしたが[React Spectrum](https://react-spectrum.adobe.com/react-spectrum/Tabs.html)は、この記事とは異なる実装を行っており興味深いです。
+
+[^motion]: [motion](https://motion.dev/docs/react-motion-component#layoutid)では、ある新しい要素がDOMに入るとき、共通するlayoutIdをもつ要素の位置関係をもとにアニメーションを行います。この実装よりも高度で機能的ですがベースは共通しています。[こちらのデモ](https://examples.motion.dev/react/shared-layout-animation)はmotionを用いてアクティブインジケーターのアニメーションを実現しています。
+
+[^changing-property]: ちなみに[リストの子を動かす方法](#list-indicator)でも`width`や`height`を変更するのではなく`transform: scale();`に置き換え可能かもしれません。しかし私の技術では`border-radius`の反映が難しかったため置換していません。
+
+[^reduce-dom-size]: ただしこの記事内のデモではSSRに対応するべくいずれの方法でも[タブごとの子を動かす方法](#trigger-indicator)プラスαの実装をしているので正確には構成や要件次第ということになります。
