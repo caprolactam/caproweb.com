@@ -1,73 +1,6 @@
 import { type Config } from 'tailwindcss'
 
 export const extendedTheme = {
-  colors: {
-    transparent: 'transparent',
-    revert: 'revert',
-    brand: {
-      1: 'hsl(var(--sand1) / <alpha-value>)',
-      2: 'hsl(var(--sand2) / <alpha-value>)',
-      3: 'hsl(var(--sand3) / <alpha-value>)',
-      4: 'hsl(var(--sand4) / <alpha-value>)',
-      5: 'hsl(var(--sand5) / <alpha-value>)',
-      6: 'hsl(var(--sand6) / <alpha-value>)',
-      7: 'hsl(var(--sand7) / <alpha-value>)',
-      8: 'hsl(var(--sand8) / <alpha-value>)',
-      9: 'hsl(var(--sand9) / <alpha-value>)',
-      10: 'hsl(var(--sand10) / <alpha-value>)',
-      11: 'hsl(var(--sand11) / <alpha-value>)',
-      12: 'hsl(var(--sand12) / <alpha-value>)',
-      'add-bg': 'hsl(var(--add-bg) / <alpha-value>)',
-      'add-text': 'hsl(var(--add-text) / <alpha-value>)',
-      'remove-bg': 'hsl(var(--remove-bg) / <alpha-value>)',
-      'remove-text': 'hsl(var(--remove-text) / <alpha-value>)',
-      link: 'hsl(var(--link) / <alpha-value>)',
-    },
-    // Start: shadcn themes
-    border: 'hsl(var(--border))',
-    input: 'hsl(var(--input))',
-    ring: 'hsl(var(--ring))',
-    background: 'hsl(var(--background))',
-    foreground: 'hsl(var(--foreground))',
-    primary: {
-      DEFAULT: 'hsl(var(--primary))',
-      foreground: 'hsl(var(--primary-foreground))',
-    },
-    secondary: {
-      DEFAULT: 'hsl(var(--secondary))',
-      foreground: 'hsl(var(--secondary-foreground))',
-    },
-    destructive: {
-      DEFAULT: 'hsl(var(--destructive))',
-      foreground: 'hsl(var(--destructive-foreground))',
-    },
-    muted: {
-      DEFAULT: 'hsl(var(--muted))',
-      foreground: 'hsl(var(--muted-foreground))',
-    },
-    accent: {
-      DEFAULT: 'hsl(var(--accent))',
-      foreground: 'hsl(var(--accent-foreground))',
-    },
-    popover: {
-      DEFAULT: 'hsl(var(--popover))',
-      foreground: 'hsl(var(--popover-foreground))',
-    },
-    card: {
-      DEFAULT: 'hsl(var(--card))',
-      foreground: 'hsl(var(--card-foreground))',
-    },
-    // End: shadcn themes
-  },
-  opacity: {
-    8: '0.08',
-    12: '0.12',
-    32: '0.32',
-    38: '0.38',
-  },
-  transitionDuration: {
-    '850': '850ms',
-  },
   transitionTimingFunction: {
     /**
      * quad（二次曲線）
@@ -113,26 +46,7 @@ export const extendedTheme = {
     'ease-in-out-quint': 'cubic-bezier(.86, 0, .07, 1)',
     'ease-in-out-expo': 'cubic-bezier(1, 0, 0, 1)',
     'ease-in-out-circ': 'cubic-bezier(.785, .135, .15, .86)',
+    // ease
+    ease: 'ease',
   },
-  // Start: shadcn themes
-  borderRadius: {
-    lg: 'var(--radius)',
-    md: 'calc(var(--radius) - 2px)',
-    sm: 'calc(var(--radius) - 4px)',
-  },
-  keyframes: {
-    'accordion-down': {
-      from: { height: '0' },
-      to: { height: 'var(--radix-accordion-content-height)' },
-    },
-    'accordion-up': {
-      from: { height: 'var(--radix-accordion-content-height)' },
-      to: { height: '0' },
-    },
-  },
-  animation: {
-    'accordion-down': 'accordion-down 0.2s ease-out',
-    'accordion-up': 'accordion-up 0.2s ease-out',
-  },
-  // End: shadcn themes
 } satisfies Config['theme']

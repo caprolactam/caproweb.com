@@ -2,14 +2,22 @@ import { runSync } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
 import { data, type MetaDescriptor } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
+import { ShowcaseCard } from '#app/components/parts/card.tsx'
 import { Title } from '#app/components/parts/title.tsx'
+import {
+  TabsByListIndicatorDemo,
+  TabsByIndicatorDemo,
+  TabsByHiddenListDemo,
+} from '#app/components/showcases/tabs/index.tsx'
 import { GeneralErrorBoundary } from '#app/components/templates/error-boundary.tsx'
 import { metadatasSchema } from '#app/utils/markdown.server.ts'
 import { datetimeFormat } from '#app/utils/misc.ts'
 import { type Route } from './+types/route'
 import { validateSlug, getMdxSource } from './api.server.ts'
 
-export const meta = ({ data, matches }: Route.MetaArgs) => {
+export const meta = ({ data, ...props }: Route.MetaArgs) => {
+  // rr@7.0.2では、ここで分割代入しないと型が機能しない問題
+  const { matches } = props
   const properties: MetaDescriptor[] = []
 
   if (data) {
@@ -29,6 +37,7 @@ export const meta = ({ data, matches }: Route.MetaArgs) => {
   }
 
   return matches.reduceRight((acc, match) => {
+    if (match == null) return acc
     for (const parentMeta of match.meta) {
       const index = acc.findIndex(
         (meta) =>
@@ -111,7 +120,14 @@ export default function Route({
         createdAt={frontmatter.createdAt}
         updatedAt={frontmatter.updatedAt}
       />
-      <MDXContent components={{}} />
+      <MDXContent
+        components={{
+          ShowcaseCard,
+          TabsByListIndicatorDemo,
+          TabsByIndicatorDemo,
+          TabsByHiddenListDemo,
+        }}
+      />
     </div>
   )
 }

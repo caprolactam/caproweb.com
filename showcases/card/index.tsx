@@ -9,7 +9,12 @@ import {
 } from 'framer-motion'
 import React from 'react'
 import { Icon } from '#app/components/parts/icon.tsx'
-import { Tooltip, TooltipProvider } from '#app/components/parts/tooltip.tsx'
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from '#app/components/parts/tooltip.tsx'
 import { set, mergeRefs, cn } from '../utils/misc.ts'
 import { isIOS } from '../utils/use-prevent-scroll.ts'
 
@@ -285,7 +290,7 @@ const DialogCard = React.forwardRef<HTMLDivElement, DialogCardProps>(
       return () => {
         resizeObserver.disconnect()
       }
-    }, [])
+    }, [containerRef])
 
     function onPress(event: React.PointerEvent<HTMLDivElement>) {
       if (
@@ -600,29 +605,32 @@ const DialogCard = React.forwardRef<HTMLDivElement, DialogCardProps>(
             ref={containerRef}
           >
             <div className='sticky top-0 z-10 -mt-12 flex h-12 w-full justify-end px-4 pt-4'>
-              <TooltipProvider delayDuration={500}>
-                <Tooltip label='Close'>
-                  <DialogPrimitive.Close asChild>
-                    <motion.button
-                      style={{
-                        opacity: mOpacity,
-                      }}
-                      data-card-no-swipe=''
-                      className={cn([
-                        'size-8 bg-brand-1/30 text-brand-12 before:hover:bg-brand-12/8 before:focus-visible:bg-brand-12/10 before:active:bg-brand-12/10 disabled:pointer-events-none disabled:text-brand-12/38',
-                        'relative inline-flex shrink-0 select-none items-center justify-center rounded-full',
-                        'before:absolute before:inset-0 before:rounded-full before:bg-transparent',
-                      ])}
-                    >
-                      <Icon
-                        name='close'
-                        className='fill-current text-current'
-                        size={24}
-                      />
-                      <div className='absolute inset-1/2 size-12 -translate-x-1/2 -translate-y-1/2' />
-                      <div />
-                    </motion.button>
-                  </DialogPrimitive.Close>
+              <TooltipProvider delayDuration={350}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DialogPrimitive.Close asChild>
+                      <motion.button
+                        style={{
+                          opacity: mOpacity,
+                        }}
+                        data-card-no-swipe=''
+                        className={cn([
+                          'size-8 bg-brand-1/30 text-brand-12 before:hover:bg-brand-12/8 before:focus-visible:bg-brand-12/10 before:active:bg-brand-12/10 disabled:pointer-events-none disabled:text-brand-12/38',
+                          'relative inline-flex shrink-0 select-none items-center justify-center rounded-full',
+                          'before:absolute before:inset-0 before:rounded-full before:bg-transparent',
+                        ])}
+                      >
+                        <Icon
+                          name='close'
+                          className='fill-current text-current'
+                          size={24}
+                        />
+                        <div className='absolute inset-1/2 size-12 -translate-x-1/2 -translate-y-1/2' />
+                        <div />
+                      </motion.button>
+                    </DialogPrimitive.Close>
+                  </TooltipTrigger>
+                  <TooltipContent>閉じる</TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
