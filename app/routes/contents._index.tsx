@@ -4,23 +4,21 @@ import { FilterChip } from '#app/components/parts/filter-chip.tsx'
 import { Icon } from '#app/components/parts/icon.tsx'
 import { GeneralErrorBoundary } from '#app/components/templates/error-boundary.tsx'
 import { ContentItem } from '#app/routes/_index.tsx'
-import { metadatasSchema } from '#app/utils/markdown.server.ts'
+import { metadataListSchema } from '#app/utils/markdown.server.ts'
+// @ts-ignore This file won’t exist if it hasn’t yet been built
+import metadata from '#app/utils/metadata/metadata.json'
 import { mergeMeta, cn } from '#app/utils/misc.ts'
 import { type Route } from './+types/contents._index'
 
 export const meta = mergeMeta(() => [{ title: 'コンテンツ | Capro Web' }])
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  const contents = await import('virtual:parse-markdown-frontmatter')
-    .then(({ metadatas }) => {
-      return metadatasSchema.parse(metadatas)
-    })
-    .then((data) =>
-      data.filter((content) =>
-        context.cloudflare.env.ENVIRONMENT === 'production'
-          ? !content.draft
-          : true,
-      ),
+  const contents = metadataListSchema
+    .parse(metadata)
+    .filter((content) =>
+      context.cloudflare.env.ENVIRONMENT === 'production'
+        ? !content.draft
+        : true,
     )
   const { searchParams } = new URL(request.url)
 
@@ -149,9 +147,9 @@ export default function Route({
       )}
       <ul>
         {contents.map((content) => (
-          <li key={content.filename}>
+          <li key={content.fileNameWithoutExt}>
             <ContentItem
-              url={`/contents/${content.filename}`}
+              url={`/contents/${content.fileNameWithoutExt}`}
               title={content.title}
               description={content.description}
               keywords={content.keywords}

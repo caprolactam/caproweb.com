@@ -10,7 +10,9 @@ import {
   TabsByHiddenListDemo,
 } from '#app/components/showcases/tabs/index.tsx'
 import { GeneralErrorBoundary } from '#app/components/templates/error-boundary.tsx'
-import { metadatasSchema } from '#app/utils/markdown.server.ts'
+import { metadataListSchema } from '#app/utils/markdown.server.ts'
+// @ts-ignore This file won’t exist if it hasn’t yet been built
+import metadata from '#app/utils/metadata/metadata.json'
 import { datetimeFormat } from '#app/utils/misc.ts'
 import { type Route } from './+types/route'
 import { validateSlug, getMdxSource } from './api.server.ts'
@@ -88,15 +90,13 @@ export const handle = {
   breadcrumb: (data: { frontmatter: { title: string } } | undefined) =>
     data ? data.frontmatter.title : '存在しないコンテンツ',
   getSitemapEntries: serverOnly$(async () => {
-    const contents = await import('virtual:parse-markdown-frontmatter').then(
-      ({ metadatas }) => {
-        return metadatasSchema.parse(metadatas)
-      },
-    )
+    const contents = metadataListSchema
+      .parse(metadata)
+      .filter((content) => !content.draft)
 
     return contents.map((content) => {
       return {
-        route: `/contents/${content.filename}`,
+        route: `/contents/${content.fileNameWithoutExt}`,
         priority: 0.7,
         lastmod: datetimeFormat(content.updatedAt ?? content.createdAt),
       }

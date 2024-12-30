@@ -75,7 +75,7 @@ function createSerializeOptions(
  * ファイル名がindexの場合はディレクトリ名をファイル名として返す
  * それ以外の場合はそのままファイル名を返す
  */
-function getFileInfo(filePath: string): {
+export function getFileInfo(filePath: string): {
   fileNameWithoutExt: string
   format: AllowedExtensions
 } {

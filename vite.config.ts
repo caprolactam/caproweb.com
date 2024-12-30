@@ -3,7 +3,6 @@ import { cloudflareDevProxy } from '@react-router/dev/vite/cloudflare'
 import { defineConfig, type UserConfigExport } from 'vite'
 import { envOnlyMacros } from 'vite-env-only'
 import { getLoadContext } from './load-context'
-import { parseMarkdownFrontmatter } from './scripts/build-md-frontmatter.ts'
 
 export default defineConfig(async ({ mode }) => {
   return {
@@ -16,7 +15,6 @@ export default defineConfig(async ({ mode }) => {
       },
     },
     plugins: [
-      parseMarkdownFrontmatter(),
       envOnlyMacros(),
       cloudflareDevProxy({ getLoadContext }),
       reactRouter(),

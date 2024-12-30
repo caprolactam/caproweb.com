@@ -26,6 +26,7 @@ worker-configuration.d.ts
 /images
 /public/sitemap.xml
 /prebuild
+/app/utils/metadata
 
 # react-router
 .react-router/

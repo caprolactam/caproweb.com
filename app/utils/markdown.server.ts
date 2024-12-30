@@ -11,17 +11,9 @@ export const frontmatterSchema = z.object({
 
 export type Frontmatter = z.infer<typeof frontmatterSchema>
 
-export const metadatasSchema = z
-  .array(
-    z.object({
-      path: z.string(),
-      filename: z.string(),
-      data: frontmatterSchema,
-    }),
-  )
-  .transform((metadatas) =>
-    metadatas.map((metadata) => ({
-      filename: metadata.filename,
-      ...metadata.data,
-    })),
-  )
+export const metadataSchema = frontmatterSchema.extend({
+  fileNameWithoutExt: z.string(),
+})
+export const metadataListSchema = z.array(metadataSchema)
+
+export type Metadata = z.infer<typeof metadataSchema>
