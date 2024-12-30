@@ -1,6 +1,6 @@
 import { runSync } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
-import { data, type MetaDescriptor } from 'react-router'
+import { data, type MetaDescriptor, Link } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { ShowcaseCard } from '#app/components/parts/card.tsx'
 import { Title } from '#app/components/parts/title.tsx'
@@ -114,6 +114,12 @@ export default function Route({
 
   return (
     <div className='prose prose-brand mb-8 border-brand-6 prose-pre:border md:mb-36'>
+      <Link
+        to='/contents'
+        className='mb-[1.25em] inline-flex'
+      >
+        ← すべてのコンテンツに戻る
+      </Link>
       <Title
         title={frontmatter.title}
         keywords={frontmatter.keywords}
