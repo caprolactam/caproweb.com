@@ -107,7 +107,7 @@ export function AppBar() {
       title='画面上部にスクロール'
       {...motionProps}
     >
-      <p className='max-w-[26ch] truncate text-base font-medium text-brand-12'>
+      <p className='max-w-[26ch] truncate text-base font-semibold text-brand-12'>
         {title}
       </p>
     </motion.button>
@@ -127,7 +127,7 @@ export function AppBar() {
       initial={false}
       animate={{
         backgroundColor: shouldSwtich
-          ? 'hsl(var(--sand1) / 0.6)'
+          ? 'hsl(var(--sand1) / 0.7)'
           : 'hsl(var(--sand1) / 1)',
       }}
     >
