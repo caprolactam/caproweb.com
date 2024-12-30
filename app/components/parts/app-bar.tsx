@@ -7,25 +7,25 @@ import { ThemePicker } from '#app/utils/theme.tsx'
 
 const AppBarContext = React.createContext<
   | {
-      titleRef: React.RefObject<HTMLDivElement>
+      titleRef: React.RefObject<HTMLDivElement | null>
       title: string
       setTitle: React.Dispatch<React.SetStateAction<string>>
     }
   | undefined
 >(undefined)
 export const AppBarProvider = ({ children }: { children: React.ReactNode }) => {
-  const titleRef = React.useRef<HTMLDivElement>(null)
+  const titleRef = React.useRef<HTMLDivElement | null>(null)
   const [title, setTitle] = React.useState('')
 
   return (
-    <AppBarContext.Provider value={{ titleRef, title, setTitle }}>
+    <AppBarContext value={{ titleRef, title, setTitle }}>
       {children}
-    </AppBarContext.Provider>
+    </AppBarContext>
   )
 }
 
 export const useAppBar = () => {
-  const context = React.useContext(AppBarContext)
+  const context = React.use(AppBarContext)
   if (context === undefined) {
     throw new Error('useAppBar must be used within a AppBarProvider')
   }

@@ -25,7 +25,7 @@ interface TooltipContentProp
   extends React.ComponentPropsWithRef<typeof TooltipPrimitive.Content> {}
 
 const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentRef<typeof TooltipPrimitive.Content>,
   TooltipContentProp
 >(function TooltipContent(
   { children, sideOffset = 4, side = 'top', ...props },

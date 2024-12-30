@@ -6,7 +6,7 @@ import { useState, useRef } from 'react'
 import { z } from 'zod'
 import { IconButton } from '#app/components/parts/icon-button.tsx'
 import { Icon } from '#app/components/parts/icon.tsx'
-import { strictEntries , cn } from './misc.ts'
+import { strictEntries, cn } from './misc.ts'
 
 const themes = ['system', 'light', 'dark'] as const
 const themeSchema = z.enum(themes)
@@ -35,10 +35,9 @@ export function ThemePicker() {
   const [theme, setTheme] = useTypedTheme()
   const [open, setOpen] = useState(false)
   const prevTheme = useRef<Theme>(theme)
-  const itemsRef = useRef<Map<Theme, HTMLButtonElement>>()
+  const itemsRef = useRef<Map<Theme, HTMLButtonElement | null>>(null)
   function getMap() {
     if (!itemsRef.current) {
-      // Initialize the Map on first usage.
       itemsRef.current = new Map() as Map<Theme, HTMLButtonElement>
     }
     return itemsRef.current
@@ -164,12 +163,11 @@ export function ThemePicker() {
               className='flex h-12 cursor-default select-none items-center gap-3 px-3 text-sm outline-none transition-colors ease-linear hover:bg-brand-4 focus-visible:bg-brand-5 active:bg-brand-5 data-[disabled]:pointer-events-none data-[disabled]:text-brand-12/38'
               value={key}
               type='button'
-              // TODO: rewrite cleanup function on React 19
               ref={(node) => {
                 const map = getMap()
-                if (node) {
-                  map.set(key, node)
-                } else {
+
+                map.set(key, node)
+                return () => {
                   map.delete(key)
                 }
               }}

@@ -1,5 +1,5 @@
 import { isbot } from 'isbot'
-import { renderToReadableStream } from 'react-dom/server.browser'
+import { renderToReadableStream } from 'react-dom/server.edge'
 import {
   type AppLoadContext,
   type EntryContext,

@@ -1,9 +1,0 @@
----
-title: Search
-createdAt: 2024-04-07
-description: Search from Material 3 with modified vaul.
-keywords:
-  - css
-  - animation
-  - dialog
----

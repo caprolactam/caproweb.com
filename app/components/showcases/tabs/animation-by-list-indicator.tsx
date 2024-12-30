@@ -1,7 +1,6 @@
 'use client'
 
 import * as TabsPrimitive from '@radix-ui/react-tabs'
-import { type TabsListProps, type TabsContentProps } from '@radix-ui/react-tabs'
 import React from 'react'
 import { mergeRefs, useIsomorphicLayoutEffect, cn, set } from '../utils/misc.ts'
 import {
@@ -12,21 +11,24 @@ import {
   indicatorContainerStyles,
   indicatorStyles,
   triggerLabelStyles,
+  useScheduleLayoutEffect,
 } from './base.tsx'
 
 type TabsContextValue = {
-  rootRef: React.RefObject<HTMLDivElement>
-  listRef: React.RefObject<HTMLDivElement>
-  activeIndicatorRef: React.RefObject<HTMLDivElement>
-  itemTab: (triggerRef: React.RefObject<HTMLButtonElement>) => () => void
-  itemIndicator: (indicatorRef: React.RefObject<HTMLDivElement>) => () => void
+  rootRef: React.RefObject<HTMLDivElement | null>
+  listRef: React.RefObject<HTMLDivElement | null>
+  activeIndicatorRef: React.RefObject<HTMLDivElement | null>
+  itemTab: (triggerRef: React.RefObject<HTMLButtonElement | null>) => () => void
+  itemIndicator: (
+    indicatorRef: React.RefObject<HTMLDivElement | null>,
+  ) => () => void
   indicator: Indicator
 }
 
 const TabsContext = React.createContext<TabsContextValue | undefined>(undefined)
 
 const useTabsContext = () => {
-  const context = React.useContext(TabsContext)
+  const context = React.use(TabsContext)
   if (!context) {
     throw new Error('useTabsContext must be used within a TabsProvider')
   }
@@ -35,7 +37,7 @@ const useTabsContext = () => {
 
 interface TabsProps
   extends Omit<
-    React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>,
+    React.ComponentPropsWithRef<typeof TabsPrimitive.Root>,
     'orientation'
   > {
   /**
@@ -59,31 +61,26 @@ interface TabsProps
   _separated?: boolean
 }
 
-const Tabs = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Root>,
-  TabsProps
->(function Tabs(
-  {
-    children,
-    value: valueProps,
-    onValueChange,
-    duration = DEFAULT_DURATION,
-    easing = `cubic-bezier(${DEFAULT_EASE.join(',')})`,
-    indicator = 'underline',
-    _separated = false,
-    ...props
-  },
+function Tabs({
+  children,
+  value: valueProps,
+  onValueChange,
+  duration = DEFAULT_DURATION,
+  easing = `cubic-bezier(${DEFAULT_EASE.join(',')})`,
+  indicator = 'underline',
+  _separated = false,
   ref,
-) {
+  ...props
+}: TabsProps) {
   const rootRef = React.useRef<HTMLDivElement>(null)
   const listRef = React.useRef<HTMLDivElement>(null)
   const activeIndicatorRef = React.useRef<HTMLDivElement>(null)
-  const tabsRef = React.useRef<Set<React.RefObject<HTMLButtonElement>>>(
+  const tabsRef = React.useRef<Set<React.RefObject<HTMLButtonElement | null>>>(
     new Set(),
   )
-  const indicatorsRef = React.useRef<Set<React.RefObject<HTMLDivElement>>>(
-    new Set(),
-  )
+  const indicatorsRef = React.useRef<
+    Set<React.RefObject<HTMLDivElement | null>>
+  >(new Set())
   const schedule = useScheduleLayoutEffect()
 
   const listTabs = React.useCallback(() => {
@@ -285,7 +282,7 @@ const Tabs = React.forwardRef<
   }, [adjustTabs, indicator])
 
   const itemTab = React.useCallback(
-    (tabRef: React.RefObject<HTMLButtonElement>) => {
+    (tabRef: React.RefObject<HTMLButtonElement | null>) => {
       tabsRef.current.add(tabRef)
       schedule(0, () => {
         adjustTabs()
@@ -302,7 +299,7 @@ const Tabs = React.forwardRef<
   )
 
   const itemIndicator = React.useCallback(
-    (indicatorRef: React.RefObject<HTMLDivElement>) => {
+    (indicatorRef: React.RefObject<HTMLDivElement | null>) => {
       indicatorsRef.current.add(indicatorRef)
       return () => {
         indicatorsRef.current.delete(indicatorRef)
@@ -355,15 +352,15 @@ const Tabs = React.forwardRef<
         })
       }}
     >
-      <TabsContext.Provider value={context}>{children}</TabsContext.Provider>
+      <TabsContext value={context}>{children}</TabsContext>
     </TabsPrimitive.Root>
   )
-})
+}
 
-const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithRef<typeof TabsPrimitive.List>
->(function TabsList({ children, className, ...props }, ref) {
+interface TabsListProps
+  extends React.ComponentPropsWithRef<typeof TabsPrimitive.List> {}
+
+function TabsList({ children, className, ref, ...props }: TabsListProps) {
   const { listRef, activeIndicatorRef, indicator } = useTabsContext()
 
   return (
@@ -385,17 +382,17 @@ const TabsList = React.forwardRef<
       />
     </TabsPrimitive.List>
   )
-})
+}
 
 interface TabsTriggerProps
-  extends Omit<TabsPrimitive.TabsTriggerProps, 'children' | 'asChild'> {
+  extends Omit<
+    React.ComponentPropsWithRef<typeof TabsPrimitive.Trigger>,
+    'children' | 'asChild'
+  > {
   children: string
 }
 
-const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  TabsTriggerProps
->(function TabsTrigger({ children, className, ...props }, ref) {
+function TabsTrigger({ children, className, ref, ...props }: TabsTriggerProps) {
   const tempId = React.useId()
   const id = props.id ?? tempId
   const { itemTab, itemIndicator, indicator } = useTabsContext()
@@ -442,23 +439,6 @@ const TabsTrigger = React.forwardRef<
       </div>
     </TabsPrimitive.Trigger>
   )
-})
-
-const useScheduleLayoutEffect = () => {
-  const [s, ss] = React.useState<readonly []>()
-  const fns = React.useRef<Map<string | number, () => void>>(
-    new Map() as Map<string | number, () => void>,
-  )
-
-  useIsomorphicLayoutEffect(() => {
-    fns.current.forEach((f) => f())
-    fns.current = new Map() as Map<string | number, () => void>
-  }, [s])
-
-  return React.useCallback((id: string | number, cb: () => void) => {
-    fns.current.set(id, cb)
-    ss([])
-  }, [])
 }
 
 const Root = Tabs
@@ -467,4 +447,3 @@ const Trigger = TabsTrigger
 const Content = TabsPrimitive.Content
 
 export { Root, List, Trigger, Indicator, Content }
-export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps }
