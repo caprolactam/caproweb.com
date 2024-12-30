@@ -6,22 +6,42 @@ import { useState, useRef } from 'react'
 import { z } from 'zod'
 import { IconButton } from '#app/components/parts/icon-button.tsx'
 import { Icon } from '#app/components/parts/icon.tsx'
-import { strictEntries } from './misc.ts'
+import { strictEntries, cn } from './misc.ts'
 
-const themeSchema = z.enum(['system', 'light', 'dark'])
-
+const themes = ['system', 'light', 'dark'] as const
+const themeSchema = z.enum(themes)
 type Theme = z.infer<typeof themeSchema>
 
+/**
+ * 行の先にあるアイテムから後にあるアイテムに移動する場合, 'up'
+ * 行の後にあるアイテムから先にあるアイテムに移動する場合, 'down'
+ */
+function getDirection(prev: Theme, next: Theme) {
+  const prevIndex = themes.indexOf(prev)
+  const nextIndex = themes.indexOf(next)
+
+  if (prevIndex < nextIndex) return 'up'
+  return 'down'
+}
+
+const useTypedTheme = () => {
+  const { theme, setTheme } = useTheme()
+  const parsed = themeSchema.safeParse(theme)
+
+  return [parsed.success ? parsed.data : 'system', setTheme] as const
+}
+
 export function ThemePicker() {
-  const { theme: t, setTheme } = useTheme()
-  let theme: Theme
-  const parsed = themeSchema.safeParse(t)
-  if (parsed.success) {
-    theme = parsed.data
-  } else {
-    theme = 'system'
-  }
+  const [theme, setTheme] = useTypedTheme()
   const [open, setOpen] = useState(false)
+  const prevTheme = useRef<Theme>(theme)
+  const itemsRef = useRef<Map<Theme, HTMLButtonElement | null>>(null)
+  function getMap() {
+    if (!itemsRef.current) {
+      itemsRef.current = new Map() as Map<Theme, HTMLButtonElement>
+    }
+    return itemsRef.current
+  }
 
   const themes: Record<
     Theme,
@@ -59,16 +79,6 @@ export function ThemePicker() {
     },
   }
 
-  const itemsRef = useRef<Map<Theme, HTMLButtonElement>>()
-
-  function getMap() {
-    if (!itemsRef.current) {
-      // Initialize the Map on first usage.
-      itemsRef.current = new Map() as Map<Theme, HTMLButtonElement>
-    }
-    return itemsRef.current
-  }
-
   return (
     <Popover.Root
       open={open}
@@ -80,102 +90,100 @@ export function ThemePicker() {
           size='lg'
           label='テーマ'
         >
-          {themes[theme].icon}
+          <AnimatePresence
+            initial={false}
+            mode='wait'
+            custom={getDirection(prevTheme.current, theme)}
+          >
+            <motion.div
+              key={theme}
+              variants={{
+                enter: {
+                  opacity: 0,
+                  y:
+                    getDirection(prevTheme.current, theme) === 'down'
+                      ? '-100%'
+                      : '100%',
+                  transition: {
+                    duration: 0.2,
+                    ease: [0.215, 0.61, 0.355, 1],
+                  },
+                },
+                visible: { opacity: 1, y: 0 },
+                exit: (direction: ReturnType<typeof getDirection>) => ({
+                  opacity: 0,
+                  y: direction === 'down' ? '100%' : '-100%',
+                  transition: {
+                    duration: 0.15,
+                    ease: [0.215, 0.61, 0.355, 1],
+                  },
+                }),
+              }}
+              initial='enter'
+              animate='visible'
+              exit='exit'
+            >
+              {themes[theme].icon}
+            </motion.div>
+          </AnimatePresence>
         </IconButton>
       </Popover.Trigger>
-      <AnimatePresence>
-        {open && (
-          <Popover.Portal forceMount>
-            <Popover.Content
-              sideOffset={5}
-              align='end'
-              onOpenAutoFocus={(e) => {
-                const items = getMap()
-                const item = items.get(theme)
+      <Popover.Content
+        sideOffset={5}
+        align='end'
+        side='bottom'
+        onOpenAutoFocus={(e) => {
+          const items = getMap()
+          const item = items.get(theme)
 
-                if (item) {
-                  e.preventDefault()
-                  item.focus()
+          if (item) {
+            e.preventDefault()
+            item.focus({ preventScroll: true })
+          }
+        }}
+        className={cn(
+          'w-48 rounded-md border border-brand-7 bg-brand-3 text-brand-12 shadow-sm',
+          'ease-ease-out-cubic data-[state=closed]:duration-150 data-[state=open]:duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2',
+        )}
+      >
+        <RadioGroup.Root
+          className='flex flex-col py-2'
+          value={theme}
+          onValueChange={(v) => {
+            if (themeSchema.safeParse(v).success) {
+              prevTheme.current = theme
+              setTheme(v)
+            }
+          }}
+          aria-label='サイトのテーマ'
+        >
+          {strictEntries(themes).map(([key, value]) => (
+            <RadioGroup.Item
+              key={key}
+              className='flex h-12 cursor-default select-none items-center gap-3 px-3 text-sm outline-none transition-colors ease-linear hover:bg-brand-4 focus-visible:bg-brand-5 active:bg-brand-5 data-[disabled]:pointer-events-none data-[disabled]:text-brand-12/38'
+              value={key}
+              type='button'
+              ref={(node) => {
+                const map = getMap()
+
+                map.set(key, node)
+                return () => {
+                  map.delete(key)
                 }
               }}
-              asChild
             >
-              <motion.div
-                className='w-48 rounded-sm border bg-brand-3 py-2 text-brand-12 shadow-md'
-                initial='closed'
-                animate='open'
-                exit='closed'
-                variants={{
-                  closed: {
-                    clipPath: 'inset(0 0 100% 0)',
-                    opacity: 0,
-                    transition: {
-                      type: 'tween',
-                      ease: [0.3, 0, 0, 1],
-                      duration: 0.2,
-                    },
-                  },
-                  open: {
-                    clipPath: 'inset(0 0 0 0)',
-                    opacity: 1,
-                    transition: {
-                      clipPath: {
-                        type: 'tween',
-                        ease: [0.3, 0, 0, 1],
-                        duration: 0.3,
-                      },
-                      opacity: {
-                        type: 'tween',
-                        duration: 0.3,
-                      },
-                    },
-                  },
-                }}
-              >
-                <RadioGroup.Root
-                  className='flex flex-col'
-                  defaultValue={theme}
-                  aria-label='サイトのテーマ'
-                >
-                  {strictEntries(themes).map(([key, value]) => (
-                    <RadioGroup.Item
-                      key={key}
-                      className='relative flex h-12 cursor-default select-none items-center gap-3 px-3 text-sm outline-none hover:bg-brand-4 focus-visible:bg-brand-4 data-[disabled]:pointer-events-none'
-                      value={key}
-                      type='button'
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setTheme(key)
-                      }}
-                      ref={(node) => {
-                        const map = getMap()
-                        if (node) {
-                          map.set(key, node)
-                        } else {
-                          map.delete(key)
-                        }
-                      }}
-                    >
-                      {themes[key].icon}
-
-                      <span className='grow text-start'>{value.label}</span>
-
-                      <span className='flex items-center justify-center'>
-                        {theme === key && (
-                          <Icon
-                            size={24}
-                            name='check'
-                          />
-                        )}
-                      </span>
-                    </RadioGroup.Item>
-                  ))}
-                </RadioGroup.Root>
-              </motion.div>
-            </Popover.Content>
-          </Popover.Portal>
-        )}
-      </AnimatePresence>
+              {themes[key].icon}
+              <span className='grow text-start'>{value.label}</span>
+              {theme === key && (
+                <Icon
+                  size={24}
+                  name='check'
+                />
+              )}
+            </RadioGroup.Item>
+          ))}
+        </RadioGroup.Root>
+      </Popover.Content>
     </Popover.Root>
   )
 }

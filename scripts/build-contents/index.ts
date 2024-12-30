@@ -1,4 +1,5 @@
 import fg from 'fast-glob'
+import { getMetadatas } from './get-metadata'
 import { createSerializedMdx } from './serialize-mdx'
 
 async function listContentPaths() {
@@ -15,4 +16,6 @@ async function listContentPaths() {
   )
 }
 
-void listContentPaths()
+await Promise.all([listContentPaths(), getMetadatas()]).catch((e) =>
+  console.error(e),
+)

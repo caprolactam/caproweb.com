@@ -1,5 +1,7 @@
 import { cva } from 'class-variance-authority'
 import { clsx } from 'clsx'
+import React from 'react'
+import { useIsomorphicLayoutEffect } from '../utils/misc.ts'
 
 const DEFAULT_DURATION = 200
 const DEFAULT_EASE = [0.215, 0.61, 0.355, 1]
@@ -57,6 +59,23 @@ const triggerLabelStyles = cva('z-[2] text-green-12', {
   },
 })
 
+const useScheduleLayoutEffect = () => {
+  const [s, ss] = React.useState<readonly []>()
+  const fns = React.useRef<Map<string | number, () => void>>(
+    new Map() as Map<string | number, () => void>,
+  )
+
+  useIsomorphicLayoutEffect(() => {
+    fns.current.forEach((f) => f())
+    fns.current = new Map() as Map<string | number, () => void>
+  }, [s])
+
+  return React.useCallback((id: string | number, cb: () => void) => {
+    fns.current.set(id, cb)
+    ss([])
+  }, [])
+}
+
 export {
   DEFAULT_DURATION,
   DEFAULT_EASE,
@@ -64,6 +83,7 @@ export {
   indicatorContainerStyles,
   indicatorStyles,
   triggerLabelStyles,
+  useScheduleLayoutEffect,
 }
 
 export type { Indicator, ExtendedIndicator }

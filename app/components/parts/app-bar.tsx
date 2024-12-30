@@ -7,25 +7,25 @@ import { ThemePicker } from '#app/utils/theme.tsx'
 
 const AppBarContext = React.createContext<
   | {
-      titleRef: React.RefObject<HTMLDivElement>
+      titleRef: React.RefObject<HTMLDivElement | null>
       title: string
       setTitle: React.Dispatch<React.SetStateAction<string>>
     }
   | undefined
 >(undefined)
 export const AppBarProvider = ({ children }: { children: React.ReactNode }) => {
-  const titleRef = React.useRef<HTMLDivElement>(null)
+  const titleRef = React.useRef<HTMLDivElement | null>(null)
   const [title, setTitle] = React.useState('')
 
   return (
-    <AppBarContext.Provider value={{ titleRef, title, setTitle }}>
+    <AppBarContext value={{ titleRef, title, setTitle }}>
       {children}
-    </AppBarContext.Provider>
+    </AppBarContext>
   )
 }
 
 export const useAppBar = () => {
-  const context = React.useContext(AppBarContext)
+  const context = React.use(AppBarContext)
   if (context === undefined) {
     throw new Error('useAppBar must be used within a AppBarProvider')
   }
@@ -107,7 +107,7 @@ export function AppBar() {
       title='画面上部にスクロール'
       {...motionProps}
     >
-      <p className='max-w-[26ch] truncate text-base font-medium text-brand-12'>
+      <p className='max-w-[26ch] truncate text-base font-semibold text-brand-12'>
         {title}
       </p>
     </motion.button>
@@ -127,7 +127,7 @@ export function AppBar() {
       initial={false}
       animate={{
         backgroundColor: shouldSwtich
-          ? 'hsl(var(--sand1) / 0.6)'
+          ? 'hsl(var(--sand1) / 0.7)'
           : 'hsl(var(--sand1) / 1)',
       }}
     >

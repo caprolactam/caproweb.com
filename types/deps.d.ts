@@ -6,7 +6,7 @@
 // }
 
 // This is for createing a sitemap on node env using `<renderToReadableStream />`
-declare module 'react-dom/server.browser' {
+declare module 'react-dom/server.edge' {
   export * from 'react-dom/server'
 }
 

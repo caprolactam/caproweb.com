@@ -1,9 +1,0 @@
----
-title: Card
-createdAt: 2024-04-07
-updatedAt: 2024-09-13
-description: Card got inspiration from App Store.
-keywords:
-  - framer-motion
-  - animation
----

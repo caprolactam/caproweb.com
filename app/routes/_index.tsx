@@ -3,16 +3,14 @@ import { AppBarTitle } from '#app/components/parts/app-bar.tsx'
 import { IconLink } from '#app/components/parts/icon-button.tsx'
 import { Icon } from '#app/components/parts/icon.tsx'
 import { GeneralErrorBoundary } from '#app/components/templates/error-boundary.tsx'
-import { metadatasSchema } from '#app/utils/markdown.server.ts'
+import { metadataListSchema } from '#app/utils/markdown.server.ts'
+// @ts-ignore This file won’t exist if it hasn’t yet been built
+import metadata from '#app/utils/metadata/metadata.json'
 import { cn } from '#app/utils/misc.ts'
 import { type Route } from './+types/_index'
 
 export async function loader() {
-  const recentContents = await import(
-    'virtual:parse-markdown-frontmatter'
-  ).then(({ metadatas }) => {
-    return metadatasSchema.parse(metadatas)
-  })
+  const recentContents = metadataListSchema.parse(metadata)
 
   const contents = recentContents
     .filter((file) => !file.draft)
@@ -75,9 +73,9 @@ export default function Index({
         >
           <ul>
             {contents.map((content) => (
-              <li key={content.filename}>
+              <li key={content.fileNameWithoutExt}>
                 <ContentItem
-                  url={`/contents/${content.filename}`}
+                  url={`/contents/${content.fileNameWithoutExt}`}
                   title={content.title}
                   description={content.description}
                   keywords={content.keywords}

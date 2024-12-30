@@ -17,13 +17,13 @@ const cardVariants = cva('', {
 })
 
 interface CardProps
-  extends React.ComponentPropsWithoutRef<typeof Slot>,
+  extends React.ComponentPropsWithRef<typeof Slot>,
     VariantProps<typeof cardVariants> {
   asChild?: boolean
 }
 
-export const Card = React.forwardRef<React.ElementRef<'div'>, CardProps>(
-  ({ className, padding, asChild, ...props }, ref) => {
+export const Card = React.forwardRef<React.ComponentRef<'div'>, CardProps>(
+  function Card({ className, padding, asChild, ...props }, ref) {
     const Comp = asChild ? Slot : 'div'
 
     return (
