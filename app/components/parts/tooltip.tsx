@@ -37,7 +37,7 @@ const TooltipContent = React.forwardRef<
         ref={ref}
         className={cn([
           // base
-          'mx-1 inline-flex h-6 items-center rounded-sm bg-brand-12 px-2 text-xs text-brand-3',
+          'z-50 mx-1 inline-flex h-6 items-center rounded-sm bg-brand-12 px-2 text-xs text-brand-3',
           // animation base
           'ease-out-cubic origin-[var(--radix-tooltip-content-transform-origin)]',
           // animation enter
