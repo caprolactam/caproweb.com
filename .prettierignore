@@ -1,0 +1,7 @@
+# default
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+.github/workflows/
