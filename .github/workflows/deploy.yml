@@ -25,12 +25,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-          registry-url: '.npmrc'
 
       - name: 📥 Download deps
-        run: npm ci
+        uses: bahmutov/npm-install@v1
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -49,12 +46,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
-          registry-url: '.npmrc'
 
       - name: 📥 Download deps
-        run: npm ci
+        uses: bahmutov/npm-install@v1
 
       - name: 🖼 Build icons
         run: npm run build:icons
