@@ -24,10 +24,13 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+          registry-url: '.npmrc'
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -45,10 +48,13 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+          registry-url: '.npmrc'
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: 🖼 Build icons
         run: npm run build:icons
