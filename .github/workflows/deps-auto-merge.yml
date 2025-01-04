@@ -25,6 +25,7 @@ jobs:
               steps.meta.outputs.update-type != 'version-update:semver-major'
             )
           }}
+        # 下記のコードではインジェクションを防ぐために、github.head_refを使わない
         run: |
-          gh pr review "${{ github.head_ref }}" --approve
-          gh pr merge "${{ github.head_ref }}" --merge --auto
+          gh pr review "${GITHUB_HEAD_REF}" --approve
+          gh pr merge "${GITHUB_HEAD_REF}" --merge --auto
