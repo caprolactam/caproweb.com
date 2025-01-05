@@ -143,7 +143,8 @@ export function ThemePicker() {
         }}
         className={cn(
           'w-48 rounded-md border border-brand-7 bg-brand-3 text-brand-12 shadow-sm',
-          'ease-ease-out-cubic data-[state=closed]:duration-150 data-[state=open]:duration-300 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2',
+          // 'data-[state=open]:duration-300 origin-top-right',
+          'origin-top-right ease-ease-out-cubic data-[state=closed]:duration-150 data-[state=open]:duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-[0.87]',
         )}
       >
         <RadioGroup.Root
