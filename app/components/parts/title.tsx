@@ -1,33 +1,17 @@
-import { md5 } from 'js-md5'
 import { AppBarTitle } from './app-bar.tsx'
 import { FilterChipLink } from './filter-chip.tsx'
 
-function createId(str: string) {
-  const fix = str.trim().replace(/[ _]/g, '-')
-  const onlyAlphanumeric = /^[a-z0-9\-]+$/i
-
-  if (onlyAlphanumeric.test(fix)) {
-    return fix.toLowerCase()
-  }
-
-  return md5(fix)
-}
-
 export function Title({
   title,
-  id: idProp,
   createdAt,
   updatedAt: updatedAtProp,
   keywords,
 }: {
-  id?: string
   title: string
   keywords: string[]
   createdAt: Date
   updatedAt?: Date
 }) {
-  const id = createId(idProp ?? title)
-
   const updatedAt = updatedAtProp ?? createdAt
   const isUpdated = updatedAt.getTime() > createdAt.getTime()
 
@@ -45,12 +29,7 @@ export function Title({
         title={title}
         asChild
       >
-        <h1
-          id={id}
-          className='mb-0'
-        >
-          {title}
-        </h1>
+        <h1 className='mb-0'>{title}</h1>
       </AppBarTitle>
       <div className='flex gap-2 text-sm md:gap-3'>
         {isUpdated && (

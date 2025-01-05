@@ -4,6 +4,7 @@ import { compile } from '@mdx-js/mdx'
 import fm from 'front-matter'
 import fsExtra from 'fs-extra'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeSlug from 'rehype-slug'
 import remarkHeadingId from 'remark-custom-header-id'
 import remarkGfm from 'remark-gfm'
 import { z } from 'zod'
@@ -54,6 +55,7 @@ function createSerializeOptions(
     remarkPlugins: [remarkGfm, remarkHeadingId],
     rehypePlugins: [
       rehypeCodeHighlight,
+      rehypeSlug,
       [
         rehypeAutolinkHeadings,
         {
