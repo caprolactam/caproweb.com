@@ -4,6 +4,7 @@ import { data, type MetaDescriptor, Link } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { ShowcaseCard } from '#app/components/parts/card.tsx'
 import { Title } from '#app/components/parts/title.tsx'
+import { RadioAnimationDemo } from '#app/components/showcases/radio/index.tsx'
 import {
   TabsByListIndicatorDemo,
   TabsByIndicatorDemo,
@@ -128,6 +129,7 @@ export default function Route({
       />
       <MDXContent
         components={{
+          RadioAnimationDemo,
           ShowcaseCard,
           TabsByListIndicatorDemo,
           TabsByIndicatorDemo,
