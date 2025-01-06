@@ -1,0 +1,26 @@
+---
+title: Radioのアニメーション
+createdAt: 2025-01-07
+description: Android 9におけるRadioの状態遷移アニメーションを再現する
+keywords:
+  - animation
+  - web
+---
+
+ベースライブラリに[`@radix-ui/react-radio-group`](https://www.radix-ui.com/primitives/docs/components/radio-group)を用いて、Android 9におけるRadioの状態遷移アニメーションを再現した。
+
+<ShowcaseCard>
+  <RadioAnimationDemo />
+</ShowcaseCard>
+
+Webではより迅速な応答が好まれること、ラジオボタンがフォームや設定でよく使われることからすると、アプリ全体の体験が遅く感じられるおそれがある。
+[こちらのアニメーション](https://material-web.dev/components/radio/)の方がシンプルで好み、アニメーションがなくても問題ない。
+
+## 学んだこと
+
+- SVGマスクを用いたラジオボタンの実装
+- 最初のレンダリング時にアニメーションを行わない方法
+
+## 参考資料
+
+- [material-web](https://github.com/material-components/material-web/tree/main/radio)
