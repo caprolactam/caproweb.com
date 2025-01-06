@@ -147,26 +147,6 @@ export function ContentItem({
   isExternal = true,
   heading: Heading = 'h3',
 }: Item & { keywords: string[]; isExternal?: boolean; heading?: 'h2' | 'h3' }) {
-  let icon: React.ReactNode
-
-  if (keywords.includes('project')) {
-    icon = (
-      <Icon
-        name='design-services-thin'
-        className='text-brand-12'
-        size={32}
-      />
-    )
-  } else {
-    icon = (
-      <Icon
-        name='article'
-        className='text-brand-12'
-        size={32}
-      />
-    )
-  }
-
   function Link({
     children,
     className,
@@ -194,7 +174,7 @@ export function ContentItem({
   return (
     <Link className='group relative grid h-14 grid-flow-col grid-rows-[repeat(2,_auto)] content-center justify-start gap-x-2'>
       <div className='row-span-2 flex size-10 items-center justify-center self-center rounded-sm'>
-        {icon}
+        <ContentItemIcon keywords={keywords} />
       </div>
       <Heading className='truncate text-base font-medium underline-offset-2 group-hover:underline'>
         {title}
@@ -210,24 +190,34 @@ export function ContentItem({
       )}
     </Link>
   )
+}
 
-  // return (
-  //   <li className='relative grid h-14 grid-flow-col grid-rows-[repeat(2,_auto)] content-center justify-start gap-x-2'>
-  //     <div className='row-span-2 flex size-10 items-center justify-center self-center rounded-sm'>
-  //       {icon}
-  //     </div>
-  //     <Link>
-  //       <h3 className='truncate text-base font-medium'>{title}</h3>
-  //     </Link>
-  //     <p className='w-full truncate text-sm text-brand-11'>{description}</p>
-  //     {isExternal && (
-  //       <div className='inline-flex items-center text-brand-11'>
-  //         <Icon
-  //           name='open-in-new'
-  //           size={20}
-  //         />
-  //       </div>
-  //     )}
-  //   </li>
-  // )
+function ContentItemIcon({ keywords }: { keywords: Array<string> }) {
+  if (keywords.includes('project')) {
+    return (
+      <Icon
+        name='design-services-thin'
+        className='text-brand-12'
+        size={32}
+      />
+    )
+  }
+
+  if (keywords.includes('animation')) {
+    return (
+      <Icon
+        name='animation'
+        className='text-brand-12'
+        size={32}
+      />
+    )
+  }
+
+  return (
+    <Icon
+      name='article'
+      className='text-brand-12'
+      size={32}
+    />
+  )
 }
