@@ -7,22 +7,23 @@ import { metadataListSchema } from '#app/utils/markdown.server.ts'
 // @ts-ignore This file won’t exist if it hasn’t yet been built
 import metadata from '#app/utils/metadata/metadata.json'
 import { cn } from '#app/utils/misc.ts'
+import {
+  filterPublishedPosts,
+  sortPostsByLatest,
+  paginatePosts,
+} from '#app/utils/posts.server.ts'
 import { type Route } from './+types/_index'
 
 export async function loader() {
-  const recentContents = metadataListSchema.parse(metadata)
+  const contents = metadataListSchema.parse(metadata)
 
-  const contents = recentContents
-    .filter((file) => !file.draft)
-    .sort((a, b) => {
-      const aTime = (a.updatedAt ?? a.createdAt).getTime()
-      const bTime = (b.updatedAt ?? b.createdAt).getTime()
-      return aTime > bTime ? -1 : aTime === bTime ? 0 : 1
-    })
-    .slice(0, 4)
+  const recentContents = paginatePosts({
+    skip: 0,
+    take: 5,
+  })(sortPostsByLatest(filterPublishedPosts(contents)))
 
   return {
-    contents,
+    recentContents,
     totalContents: contents.length,
   }
 }
@@ -42,7 +43,7 @@ const propjects: Array<Item> = [
 ]
 
 export default function Index({
-  loaderData: { contents, totalContents },
+  loaderData: { recentContents, totalContents },
 }: Route.ComponentProps) {
   return (
     <>
@@ -72,7 +73,7 @@ export default function Index({
           }
         >
           <ul>
-            {contents.map((content) => (
+            {recentContents.map((content) => (
               <li key={content.fileNameWithoutExt}>
                 <ContentItem
                   url={`/contents/${content.fileNameWithoutExt}`}
