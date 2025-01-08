@@ -8,6 +8,10 @@ import { metadataListSchema } from '#app/utils/markdown.server.ts'
 // @ts-ignore This file won’t exist if it hasn’t yet been built
 import metadata from '#app/utils/metadata/metadata.json'
 import { mergeMeta, cn } from '#app/utils/misc.ts'
+import {
+  filterPostsByKeywords,
+  sortPostsByLatest,
+} from '#app/utils/posts.server.ts'
 import { type Route } from './+types/contents._index'
 
 export const meta = mergeMeta(() => [{ title: 'コンテンツ | Capro Web' }])
@@ -24,44 +28,29 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   // Filter with keywords
   // 1. Get all keywords from query
-  const queryKeywords = new Set(searchParams.getAll('keyword'))
+  const queriesKeywords = new Set(searchParams.getAll('keyword'))
   // 2. Get all keywords from contents
-  const allKeywords: Set<string> = new Set()
-  contents.forEach((content) => {
-    content.keywords?.forEach((keyword) => {
-      allKeywords.add(keyword)
-    })
-  })
-  // 3. Filter contents by keywords
-  const filteredKeywords = new Set(
-    [...queryKeywords].filter((keyword) => allKeywords.has(keyword)),
+  const contentsKeywords: Set<string> = new Set(
+    contents.flatMap((content) => content.keywords),
   )
-  const filteredContents = contents
-    .filter((content) => {
-      return [...filteredKeywords].every((keyword) =>
-        content.keywords?.includes(keyword),
-      )
-    })
-    .sort((a, b) => {
-      // sort by updatedAt(desc), tittle(asc)
-      const aTime = (a.updatedAt ?? a.createdAt).getTime()
-      const bTime = (b.updatedAt ?? b.createdAt).getTime()
-      return aTime > bTime ? -1 : aTime === bTime ? 0 : 1
-    })
+  // 3. Filter contents by keywords
+  const filteringKeywords = queriesKeywords.intersection(contentsKeywords)
+
+  const filteredContents = sortPostsByLatest(
+    filterPostsByKeywords([...filteringKeywords])(contents),
+  )
+
   // 4. Get selectable keywords from filtered contents
-  const selectableKeywords: Set<string> = new Set()
-  filteredContents.forEach((content) => {
-    content.keywords?.forEach((keyword) => {
-      selectableKeywords.add(keyword)
-    })
-  })
+  const selectableKeywords: Set<string> = new Set(
+    filteredContents.flatMap((content) => content.keywords),
+  )
 
   // TODO: Pagination with offset(currently display all contents.)
 
   return {
     contents: filteredContents,
     totalContents: contents.length,
-    allKeywords: [...allKeywords].sort(),
+    allKeywords: [...contentsKeywords].sort(),
     selectableKeywords: [...selectableKeywords],
   }
 }
@@ -89,7 +78,7 @@ export default function Route({
       >
         <h1 className='mb-4 text-2xl font-bold md:mb-6'>コンテンツ</h1>
       </AppBarTitle>
-      {contents.length === 0 ? null : (
+      {allKeywords.length === 0 ? null : (
         <div className='mb-4 md:mb-6'>
           <span className='sr-only'>キーワードで絞り込む</span>
           <ul className='flex flex-wrap gap-2 md:gap-3'>
@@ -107,11 +96,16 @@ export default function Route({
                       submissionKeywords.delete(keyword)
                     }
 
-                    void navigate({
-                      search: setSearchParamsString(searchParams, {
-                        keyword: submissionKeywords,
-                      }),
-                    })
+                    void navigate(
+                      {
+                        search: setSearchParamsString(searchParams, {
+                          keyword: submissionKeywords,
+                        }),
+                      },
+                      {
+                        replace: true,
+                      },
+                    )
                   }}
                 >
                   {keyword}
@@ -122,11 +116,16 @@ export default function Route({
               <button
                 type='button'
                 onClick={() => {
-                  void navigate({
-                    search: setSearchParamsString(searchParams, {
-                      keyword: undefined,
-                    }),
-                  })
+                  void navigate(
+                    {
+                      search: setSearchParamsString(searchParams, {
+                        keyword: undefined,
+                      }),
+                    },
+                    {
+                      replace: true,
+                    },
+                  )
                 }}
                 disabled={selectedCount === 0}
                 className={cn(

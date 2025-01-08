@@ -7,7 +7,7 @@ workers_dev = true
 compatibility_date = "2024-12-30"
 compatibility_flags = [ "nodejs_compat" ]
 
-assets = { directory = "./build/client" }
+assets = { directory = "./build/client", html_handling = "drop-trailing-slash"}
 
 [vars]
 ENVIRONMENT = "production"

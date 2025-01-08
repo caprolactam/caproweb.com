@@ -21,7 +21,7 @@ export function validateSlug(slug: string): void {
 
 export async function getMdxSource(slug: string) {
   try {
-    // node runtime(build environment)
+    // in build environment(node.js)
     const filePath = path.join(
       process.cwd(),
       'prebuild',
@@ -43,7 +43,7 @@ export async function getMdxSource(slug: string) {
 
     return file
   } catch (error) {
-    // edge runtime(prodution environment)
+    // in production environment(edge runtime)
     console.error(error)
     return null
   }
