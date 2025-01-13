@@ -65,7 +65,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250109.0",
     "@epic-web/config": "^1.16.5",
-    "@eslint/compat": "^1.2.4",
+    "@eslint/compat": "^1.2.5",
     "@eslint/markdown": "^6.2.1",
     "@react-router/dev": "^7.1.1",
     "@react-router/fs-routes": "^7.1.1",
