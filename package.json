@@ -90,7 +90,7 @@
     "@types/react-dom": "^19.0.3",
     "autoprefixer": "^10.4.20",
     "chokidar": "^4.0.3",
-    "close-with-grace": "^2.1.0",
+    "close-with-grace": "^2.2.0",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "esbuild": "^0.24.2",
