@@ -102,7 +102,7 @@
     "eslint-plugin-tailwindcss": "^3.17.5",
     "execa": "^9.5.2",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.2.0",
+    "fs-extra": "^11.3.0",
     "glob": "^11.0.1",
     "hast-util-to-string": "^3.0.1",
     "husky": "^9.1.7",
