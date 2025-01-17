@@ -68,7 +68,7 @@
     "@eslint/compat": "^1.2.5",
     "@eslint/markdown": "^6.2.1",
     "@react-router/dev": "^7.1.1",
-    "@react-router/fs-routes": "^7.1.1",
+    "@react-router/fs-routes": "^7.1.2",
     "@sly-cli/sly": "^1.14.0",
     "@storybook/addon-a11y": "^8.4.7",
     "@storybook/addon-console": "^3.0.0",
