@@ -1,6 +1,6 @@
 {
-  "name": "capro-web",
-  "Private": true,
+  "name": "caproweb.com",
+  "private": true,
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
@@ -128,6 +128,6 @@
     "wrangler": "^3.103.2"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "~4"
+    "@rollup/rollup-linux-x64-gnu": "^4"
   }
 }
