@@ -3,37 +3,36 @@ import { z } from 'zod'
 import { Icon } from '#app/components/parts/icon.tsx'
 
 type BreadcrumbProps = {
-  index: number
   lastIndex: boolean
   label: string
   to: string
 }
 
-function Breadcrumb({ index, lastIndex, label, to }: BreadcrumbProps) {
-  const arrowIcon = index !== 0 && (
+function Breadcrumb({ lastIndex, label, to }: BreadcrumbProps) {
+  const arrowIcon = (
     <Icon
       name='navigate-next-thin'
-      className='translate-x-0.5 text-brand-11'
+      className='translate-x-0.5 text-brand-11 group-last-of-type:hidden'
       size={24}
     />
   )
 
   const baseBreadCrumb = (
     <>
-      {arrowIcon}
       <Link
         to={to}
         className='anchor'
       >
         {label}
       </Link>
+      {arrowIcon}
     </>
   )
 
   const lastBreadCrumb = (
     <>
-      {arrowIcon}
       <span className='truncate'>{label}</span>
+      {arrowIcon}
     </>
   )
 
@@ -74,14 +73,13 @@ export function BreadCrumbs() {
       aria-label='Breadcrumbs'
       className='text-sm'
     >
-      <ol className='flex h-10 min-w-0 list-none overflow-hidden'>
+      <ol className='flex min-w-0 list-none flex-wrap pb-2'>
         {breadcrumbs.map((match, index, arr) => (
           <li
             key={match.id}
-            className='flex items-center'
+            className='group flex items-center'
           >
             <Breadcrumb
-              index={index}
               lastIndex={index === arr.length - 1}
               label={match.label}
               to={match.pathname}
