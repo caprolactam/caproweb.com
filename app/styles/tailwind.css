@@ -185,7 +185,6 @@
 }
 
 @layer components {
-  /* use `:where` for being able to overwrite by `outline-none` */
   :where(
     *[tabindex='0'],
     a,
@@ -195,5 +194,11 @@
     button:not([disabled])
   ) {
     @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-brand-12 focus-visible:ring focus-visible:ring-brand-1;
+  }
+
+  input::-webkit-search-cancel-button {
+    display: none;
+    -webkit-appearance: none;
+    appearance: none;
   }
 }

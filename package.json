@@ -21,6 +21,7 @@
     "types": "react-router typegen && wrangler types",
     "format": "prettier '**/*.{js,jsx,ts,tsx,json,css,yaml,yml}' --write",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "tsc": "npm run types && tsc --noEmit",
     "prepare": "husky",
     "check-bundle-size": "wrangler deploy server.ts --dry-run",

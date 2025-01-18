@@ -1,3 +1,4 @@
+import { Slottable } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { forwardRef } from 'react'
 import { Link as RemixLink } from 'react-router'
@@ -9,7 +10,7 @@ import {
   TooltipContent,
 } from './tooltip.tsx'
 
-export const iconButtonVariants = cva(
+const iconButtonVariants = cva(
   [
     // base
     'relative inline-flex shrink-0 select-none items-center justify-center rounded-full text-brand-12',
@@ -40,7 +41,7 @@ export const iconButtonVariants = cva(
   },
 )
 
-type IconButtonProp = React.ComponentPropsWithRef<'button'> &
+type IconButtonProp = React.ComponentPropsWithRef<typeof TooltipTrigger> &
   Omit<VariantProps<typeof iconButtonVariants>, 'elementType'> & {
     label: string
   }
@@ -77,7 +78,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProp>(
             type={type}
             aria-label={label}
           >
-            {children}
+            <Slottable>{children}</Slottable>
             <TouchTarget />
           </TooltipTrigger>
           <TooltipContent>{label}</TooltipContent>
@@ -167,4 +168,4 @@ function TouchTarget() {
   )
 }
 
-export { IconButton, IconLink, IconAnchor }
+export { IconButton, IconLink, IconAnchor, TouchTarget, iconButtonVariants }
