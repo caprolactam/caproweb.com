@@ -4,8 +4,8 @@ import { data, type MetaDescriptor, Link } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { ShowcaseCard } from '#app/components/parts/card.tsx'
 import { Title } from '#app/components/parts/title.tsx'
-import { SearchDemo } from '#app/components/showcases/search/index.tsx'
 import { RadioAnimationDemo } from '#app/components/showcases/radio/index.tsx'
+import { SearchDemo } from '#app/components/showcases/search/index.tsx'
 import {
   TabsByListIndicatorDemo,
   TabsByIndicatorDemo,
