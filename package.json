@@ -89,7 +89,7 @@
     "close-with-grace": "^2.2.0",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "escape-goat": "^4.0.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
