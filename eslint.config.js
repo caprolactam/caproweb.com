@@ -6,7 +6,6 @@ import markdownPlugin from '@eslint/markdown'
 import prettierPlugin from 'eslint-config-prettier'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
-import tailwindPlugin from 'eslint-plugin-tailwindcss'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -17,7 +16,6 @@ const gitignorePath = path.resolve(__dirname, '.gitignore')
 /** @type {import("eslint").Linter.Config} */
 export default [
   ...defaultConfig,
-  ...tailwindPlugin.configs['flat/recommended'],
   jsxA11y.flatConfigs.recommended,
   {
     files: ['**/*.md'],
