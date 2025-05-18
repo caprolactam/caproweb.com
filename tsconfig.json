@@ -3,7 +3,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".storybook/**/*.ts",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    ".tailwind.config.ts"
   ],
   "extends": ["@epic-web/config/typescript"],
   "compilerOptions": {

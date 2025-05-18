@@ -1,5 +1,6 @@
 import { reactRouter } from '@react-router/dev/vite'
 import { cloudflareDevProxy } from '@react-router/dev/vite/cloudflare'
+import tailwindcss from '@tailwindcss/vite'
 import {
   defineConfig,
   defaultServerConditions,
@@ -39,6 +40,7 @@ export default defineConfig(async ({ mode }) => {
       mainFields: ['browser', 'module', 'main'],
     },
     plugins: [
+      tailwindcss(),
       envOnlyMacros(),
       cloudflareDevProxy({ getLoadContext }),
       reactRouter(),

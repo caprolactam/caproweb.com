@@ -1,7 +1,5 @@
 import typography from '@tailwindcss/typography'
 import { type Config } from 'tailwindcss'
-import animatePlugin from 'tailwindcss-animate'
-import { extendedTheme } from './app/utils/extended-theme.ts'
 
 export default {
   content: [
@@ -18,7 +16,6 @@ export default {
       },
     },
     extend: {
-      ...extendedTheme,
       colors: {
         transparent: 'transparent',
         revert: 'revert',
@@ -190,5 +187,5 @@ export default {
       },
     },
   },
-  plugins: [animatePlugin, typography],
+  plugins: [typography],
 } satisfies Config

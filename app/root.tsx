@@ -8,7 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router'
-import markdownStyles from '#app/styles/markdown.css?url'
+// import markdownStyles from '#app/styles/markdown.css?url'
 import { AppBarProvider } from './components/parts/app-bar.tsx'
 import { Footer } from './components/parts/footer.tsx'
 import { Main } from './components/parts/misc.tsx'
@@ -18,7 +18,7 @@ import styles from './styles/tailwind.css?url'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
-  { rel: 'stylesheet', href: markdownStyles },
+  // { rel: 'stylesheet', href: markdownStyles },
   { rel: 'apple-touch-icon', href: '/favicons/apple-touch-icon.png' },
   {
     rel: 'preload',
@@ -66,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className='flex min-h-screen flex-col bg-brand-1 text-brand-12 antialiased'>
+      <body className='bg-brand-1 text-brand-12 flex min-h-screen flex-col antialiased'>
         <ThemeProvider
           attribute='class'
           defaultTheme='system'

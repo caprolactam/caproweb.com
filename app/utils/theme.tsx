@@ -142,9 +142,9 @@ export function ThemePicker() {
           }
         }}
         className={cn(
-          'w-48 rounded-md border border-brand-7 bg-brand-3 text-brand-12 shadow-sm',
+          'border-brand-7 bg-brand-3 text-brand-12 w-48 rounded-md border shadow-sm',
           // 'data-[state=open]:duration-300 origin-top-right',
-          'origin-top-right ease-ease-out-cubic data-[state=closed]:duration-150 data-[state=open]:duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-[0.87]',
+          'ease-out-cubic data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-[0.87] origin-top-right data-[state=closed]:duration-150 data-[state=open]:duration-200',
         )}
       >
         <RadioGroup.Root
@@ -161,7 +161,7 @@ export function ThemePicker() {
           {strictEntries(themes).map(([key, value]) => (
             <RadioGroup.Item
               key={key}
-              className='flex h-12 cursor-default select-none items-center gap-3 px-3 text-sm outline-none transition-colors ease-linear hover:bg-brand-4 focus-visible:bg-brand-5 active:bg-brand-5 data-[disabled]:pointer-events-none data-[disabled]:text-brand-12/38'
+              className='hover:bg-brand-4 focus-visible:bg-brand-5 active:bg-brand-5 data-[disabled]:text-brand-12/38 flex h-12 cursor-default items-center gap-3 px-3 text-sm transition-colors ease-linear outline-none select-none data-[disabled]:pointer-events-none'
               value={key}
               type='button'
               ref={(node) => {

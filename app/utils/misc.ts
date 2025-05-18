@@ -1,22 +1,13 @@
 import { clsx, type ClassValue } from 'clsx'
 import React from 'react'
 import { type LoaderFunction, type MetaFunction } from 'react-router'
-import { extendTailwindMerge } from 'tailwind-merge'
-import { extendedTheme } from './extended-theme.ts'
+import { twMerge } from 'tailwind-merge'
 
 export const datetimeFormat = (date: Date) =>
   `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 
-const customTwMerge = extendTailwindMerge({
-  extend: {
-    classGroups: {
-      ease: Object.keys(extendedTheme.transitionTimingFunction),
-    },
-  },
-})
-
 export function cn(...inputs: ClassValue[]) {
-  return customTwMerge(clsx(inputs))
+  return twMerge(clsx(inputs))
 }
 
 // https://github.com/gregberge/react-merge-refs
