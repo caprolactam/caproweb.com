@@ -84,7 +84,7 @@
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/fs-extra": "^11.0.4",
     "@types/hast": "^3.0.4",
-    "@types/react": "^19.1.5",
+    "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "autoprefixer": "^10.4.21",
     "chokidar": "^4.0.3",
