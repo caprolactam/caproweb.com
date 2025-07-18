@@ -36,9 +36,11 @@ jobs:
       - name: 📥 Download deps
         run: npm ci
 
+      - name: 🔨 Build App
+        run: npm run build
+
       - name: 🔬 Lint
         run: npm run lint
 
       - name: 🔎 Type check
         run: npm run typecheck
- 
