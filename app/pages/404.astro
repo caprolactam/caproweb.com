@@ -1,0 +1,27 @@
+---
+import Layout from '@/components/layout.astro'
+---
+
+<Layout
+  breadCrumbs={[
+    { label: 'ホーム', href: '/' },
+    { label: '存在しないページ', href: '/' },
+  ]}
+>
+  <Fragment slot='head'>
+    <title>存在しないページ | Capro Web</title>
+    <meta
+      name='description'
+      content='お探しのページは見つかりませんでした'
+    />
+    <meta
+      name='robots'
+      content='noindex'
+    />
+  </Fragment>
+  <div
+    class='text-brand-11 mt-16 mb-24 flex w-full grow items-center justify-center text-base font-semibold md:mt-24 md:mb-36'
+  >
+    お探しのページは見つかりませんでした
+  </div>
+</Layout>
