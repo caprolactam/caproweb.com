@@ -48,7 +48,7 @@ export class ThemeObserver {
   public setSystemTheme = (newSystemTheme: SystemTheme) => {
     const oldValue = this.$store.get()
 
-    // 現在のthemeが'system'の場合は、resolvedThemeをnewSystemThemeに更新
+    // If the current theme is 'system', update resolvedTheme to newSystemTheme
     if (oldValue.theme === 'system') {
       this.$store.set({
         ...oldValue,
