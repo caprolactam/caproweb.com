@@ -1,7 +1,7 @@
 node_modules
 .DS_store
 
-/build
+dist
 .env
 .cache
 
@@ -11,23 +11,19 @@ node_modules
 # cloudflare
 .dev.vars
 worker-configuration.d.ts
-/.wrangler/
+.wrangler/
 
 # tests
 /test-results/
 /playwright-report/
 /playwright/.cache/
 /coverage
-*storybook.log
-/storybook-static
 
 # app
-/app/components/icons
-/images
-/public/sitemap.xml
-/prebuild
-/app/utils/metadata
+app/components/icons
+app/content/frontmatters.ts
+public/sitemap.xml
+public/sprite.svg
 
-# react-router
-.react-router/
-
+# astro
+.astro/

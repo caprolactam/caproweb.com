@@ -1,53 +1,76 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { default as defaultConfig } from '@epic-web/config/eslint'
-import { includeIgnoreFile } from '@eslint/compat'
-import markdownPlugin from '@eslint/markdown'
-import prettierPlugin from 'eslint-config-prettier'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import parser from '@typescript-eslint/parser'
+import { globalIgnores } from 'eslint/config'
+import eslintPluginAstro from 'eslint-plugin-astro'
+import globals from 'globals'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const gitignorePath = path.resolve(__dirname, '.gitignore')
-
-// TODO: add eslint-plugin-storybook when available for flat config
+const ERROR = 'error'
+const WARN = 'warn'
 
 /** @type {import("eslint").Linter.Config} */
 export default [
-  ...defaultConfig,
-  jsxA11y.flatConfigs.recommended,
+  globalIgnores(['dist', '**/*.d.ts']),
+  ...eslintPluginAstro.configs.recommended,
+  ...eslintPluginAstro.configs['jsx-a11y-recommended'],
   {
-    files: ['**/*.md'],
-    plugins: {
-      markdown: markdownPlugin,
+    files: ['**/*.{ts,tsx,astro}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+      parserOptions: {
+        sourceType: 'module',
+      },
     },
-    language: 'markdown/gfm',
     rules: {
-      'markdown/fenced-code-language': 'error',
-      'markdown/heading-increment': 'error',
-      'markdown/no-duplicate-headings': 'error',
-      'markdown/no-empty-links': 'error',
-      'markdown/no-html': 'error',
-      'markdown/no-invalid-label-refs': 'error',
-      'markdown/no-missing-label-refs': 'error',
+      'no-undef': 'off',
+      'no-warning-comments': [
+        ERROR,
+        { terms: ['FIXME'], location: 'anywhere' },
+      ],
     },
   },
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser,
+    },
+  },
+  {
     plugins: {
-      'react-hooks': reactHooksPlugin,
+      import: (await import('eslint-plugin-import-x')).default,
     },
     rules: {
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': [
-        'warn',
+      'import/consistent-type-specifier-style': [ERROR, 'prefer-top-level'],
+      'import/order': [
+        WARN,
         {
-          additionalHooks: 'useIsomorphicLayoutEffect',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          pathGroups: [{ pattern: '@/**', group: 'internal' }],
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+          ],
         },
       ],
     },
   },
-  prettierPlugin,
-  includeIgnoreFile(gitignorePath),
+  {
+    files: ['**/*.astro'],
+    rules: {
+      'no-unused-vars': [
+        WARN,
+        {
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^ignored',
+        },
+      ],
+    },
+  },
 ]

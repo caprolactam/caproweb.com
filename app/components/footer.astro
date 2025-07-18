@@ -1,0 +1,62 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import { iconButtonVariants } from './ui/icon-button.tsx'
+
+interface Props extends HTMLAttributes<'footer'> {}
+const { class: className, ...props } = Astro.props
+
+const year = new Date().getFullYear()
+
+const iconClasses = iconButtonVariants({
+  variant: 'ghost',
+  size: 'md',
+  className: 'shrink-0',
+})
+---
+
+<footer
+  class:list={['mx-auto w-full max-w-3xl px-4 md:px-6', className]}
+  {...props}
+>
+  <div
+    class='border-brand-6 text-brand-12 flex h-14 min-w-0 flex-nowrap items-center justify-between gap-2 border-t text-sm'
+  >
+    <div class='flex-1'>{`© ${year} caprolactam`}</div>
+    <a
+      href='https://github.com/caprolactam'
+      title='GitHubアカウント'
+      class={iconClasses}
+    >
+      <img
+        class='size-6 dark:hidden'
+        src='/images/github-for-light.svg'
+        alt='GitHubのロゴ'
+        loading='lazy'
+      />
+      <img
+        class='hidden size-6 dark:inline'
+        src='/images/github-for-dark.svg'
+        alt='GitHubのロゴ'
+        loading='lazy'
+      />
+    </a>
+    <a
+      href='https://x.com/derivesfrom'
+      title='Xアカウント'
+      class={iconClasses}
+    >
+      <img
+        class='size-[18px] dark:hidden'
+        src='/images/x-for-light.png'
+        alt='Xのロゴ'
+        loading='lazy'
+      />
+      <img
+        class='hidden size-[18px] dark:inline'
+        src='/images/x-for-dark.png'
+        alt='Xのロゴ'
+        loading='lazy'
+      />
+    </a>
+  </div>
+</footer>

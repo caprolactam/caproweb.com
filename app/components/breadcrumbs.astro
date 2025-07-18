@@ -1,0 +1,41 @@
+---
+import { Icon } from './ui/icon.tsx'
+
+export interface Props {
+  class?: string
+  links: Array<{ label: string; href: string }>
+}
+const { links, class: className } = Astro.props
+---
+
+<nav
+  aria-label='パンくずリスト'
+  class:list={['flex h-12 items-center', className]}
+>
+  <ol class='flex min-w-0 list-none flex-wrap items-center text-sm'>
+    {
+      links.map(({ label, href }, index) => {
+        const isLast = index === links.length - 1
+        return (
+          <li class='group inline-flex items-center'>
+            {isLast ? (
+              label
+            ) : (
+              <a
+                href={href}
+                class='relative underline-offset-2 before:absolute before:inset-x-0 before:inset-y-1/2 before:h-12 before:-translate-y-1/2 hover:underline'
+              >
+                {label}
+              </a>
+            )}
+            <Icon
+              name='navigate-next-thin'
+              className='text-brand-11 translate-x-px group-last-of-type:hidden'
+              size={20}
+            />
+          </li>
+        )
+      })
+    }
+  </ol>
+</nav>

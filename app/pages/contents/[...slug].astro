@@ -1,0 +1,53 @@
+---
+import { render } from 'astro:content'
+import Layout from '@/components/layout.astro'
+import Title from '@/components/title.astro'
+import { listSortedContents } from '@/lib/content.ts'
+import { getSlug } from '@/lib/frontmatter.ts'
+
+export async function getStaticPaths() {
+  const posts = await listSortedContents()
+
+  return posts.map((post) => ({
+    params: { slug: getSlug(post.filePath ?? post.id) },
+    props: { entry: post },
+  }))
+}
+
+const { slug } = Astro.params
+const { entry } = Astro.props
+
+const { Content } = await render(entry)
+---
+
+<Layout
+  breadCrumbs={[
+    { label: 'ホーム', href: '/' },
+    { label: entry.data.title, href: `/contents/${slug}` },
+  ]}
+>
+  <Fragment slot='head'>
+    <title>{`${entry.data.title} | Capro Web`}</title>
+    <meta
+      name='description'
+      content={entry.data.description}
+    />
+  </Fragment>
+  <div class='prose'>
+    <a
+      href='/'
+      class='mb-[1.25em] inline-flex'
+    >
+      ← ホームに戻る
+    </a>
+    <article>
+      <Title
+        title={entry.data.title}
+        publishedAt={entry.data.publishedAt}
+        updatedAt={entry.data.updatedAt}
+        imageSrc={entry.data.image}
+      />
+      <Content />
+    </article>
+  </div>
+</Layout>

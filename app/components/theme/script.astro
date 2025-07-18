@@ -1,0 +1,137 @@
+---
+/**
+ * Forked from  pacocoursey/next-themes
+ * Modified for custom store
+ *  - MIT https://github.com/pacocoursey/next-themes/blob/main/next-themes/license.md
+ */
+import type { Theme } from './store.ts'
+
+const DEFAULT_THEME: Theme = 'system'
+const STORAGE_KEY = 'theme'
+const ATTRIBUTES = ['class', 'data-theme']
+---
+
+<script is:inline define:vars={{ DEFAULT_THEME, STORAGE_KEY, ATTRIBUTES }}>
+  {
+    /**
+     * フラッシュを避けるためインラインで即時実行
+     */
+  }
+  try {
+    const theme = localStorage.getItem(STORAGE_KEY) ?? DEFAULT_THEME
+    const isSystem = theme === 'system'
+
+    const resolvedTheme = isSystem ? getSystemTheme() : theme
+
+    updateDOM(resolvedTheme)
+  } catch (error) {}
+
+  function updateDOM(theme) {
+    const { documentElement: el } = document
+    const attributes = ATTRIBUTES
+
+    attributes.forEach((attr) => {
+      const isClass = attr === 'class'
+      const classes = ['dark', 'light']
+      if (isClass) {
+        el.classList.remove(...classes)
+        el.classList.add(theme)
+      } else if (attr.startsWith('data-')) {
+        el.setAttribute(attr, theme)
+      }
+    })
+
+    el.style.colorScheme = theme
+  }
+
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  }
+</script>
+<script>
+  import { themeObserver, isTheme } from './store.ts'
+  import type { Theme, ResolvedTheme, Store } from './store.ts'
+
+  const DEFAULT_THEME: Theme = 'system'
+  const STORAGE_KEY = 'theme'
+  const ATTRIBUTES = ['class', 'data-theme']
+  const mediaMatcher = window.matchMedia('(prefers-color-scheme: dark)')
+  const themeStorage = {
+    get: () => localStorage.getItem(STORAGE_KEY),
+    set: (value: ResolvedTheme) => localStorage.setItem(STORAGE_KEY, value),
+    remove: () => localStorage.removeItem(STORAGE_KEY),
+  }
+
+  initObserver()
+
+  themeObserver.onThemeChange.add(handleThemeChange)
+  window.addEventListener('storage', handleStorageChange)
+  mediaMatcher.addEventListener('change', handleMediaChange)
+
+  // ThemeObserverクラスの作成をここで行うと状態が共有できなくなるので、ここで改めて状態の同期を行います。
+  // レンダリングの最適化のため、リスナーを登録する前に実行します。
+  function initObserver() {
+    const theme = themeStorage.get() ?? DEFAULT_THEME
+    const systemTheme = getSystemTheme(mediaMatcher)
+
+    if (isTheme(theme)) {
+      themeObserver.setTheme(theme)
+    }
+
+    themeObserver.setSystemTheme(systemTheme)
+  }
+
+  function handleThemeChange({ theme, resolvedTheme }: Store) {
+    updateDOM(resolvedTheme)
+
+    const isSystem = theme === 'system'
+    if (isSystem) {
+      themeStorage.remove()
+    } else {
+      themeStorage.set(resolvedTheme)
+    }
+  }
+
+  function updateDOM(theme: ResolvedTheme) {
+    const { documentElement: el } = document
+    const attributes = ATTRIBUTES
+
+    attributes.forEach((attr) => {
+      const isClass = attr === 'class'
+      const classes = ['dark', 'light']
+      if (isClass) {
+        el.classList.remove(...classes)
+        el.classList.add(theme)
+      } else if (attr.startsWith('data-')) {
+        el.setAttribute(attr, theme)
+      }
+    })
+
+    el.style.colorScheme = theme
+  }
+
+  function handleStorageChange(event: StorageEvent) {
+    if (event.key !== STORAGE_KEY) return
+
+    const newTheme = event.newValue
+
+    if (newTheme && isTheme(newTheme)) {
+      themeObserver.setTheme(newTheme)
+      return
+    }
+
+    themeObserver.setTheme(DEFAULT_THEME)
+  }
+
+  function handleMediaChange(event: MediaQueryListEvent) {
+    const systemTheme = getSystemTheme(event)
+
+    themeObserver.setSystemTheme(systemTheme)
+  }
+
+  function getSystemTheme(event: MediaQueryList | MediaQueryListEvent) {
+    return event.matches ? 'dark' : 'light'
+  }
+</script>

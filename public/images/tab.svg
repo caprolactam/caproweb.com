@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 128 128">
+  <defs>
+    <style>
+      .st0 {
+        fill: #30a46c;
+      }
+
+      .st1 {
+        fill: #193b2d;
+      }
+    </style>
+  </defs>
+  <path class="st0" d="M82,82c19.75-.31,35.69-16.25,36-36h-36v36Z"/>
+  <path class="st1" d="M46,46c-19.75.31-35.69,16.25-36,36h72v-36h-36Z"/>
+</svg>
