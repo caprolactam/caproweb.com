@@ -4,26 +4,26 @@
  * Modified for custom store
  *  - MIT https://github.com/pacocoursey/next-themes/blob/main/next-themes/license.md
  */
-import type { Theme } from './store.ts'
-
-const DEFAULT_THEME: Theme = 'system'
-const STORAGE_KEY = 'theme'
-const ATTRIBUTES = ['class', 'data-theme']
 ---
 
-<script is:inline define:vars={{ DEFAULT_THEME, STORAGE_KEY, ATTRIBUTES }}>
+<script is:inline>
   {
     /**
      * フラッシュを避けるためインラインで即時実行
      */
   }
+  const DEFAULT_THEME = 'system'
+  const STORAGE_KEY = 'theme'
+  const ATTRIBUTES = ['class', 'data-theme']
+
   try {
     const theme = localStorage.getItem(STORAGE_KEY) ?? DEFAULT_THEME
     const isSystem = theme === 'system'
-
     const resolvedTheme = isSystem ? getSystemTheme() : theme
 
-    updateDOM(resolvedTheme)
+    if (isResolvedTheme(resolvedTheme)) {
+      updateDOM(resolvedTheme)
+    }
   } catch (error) {}
 
   function updateDOM(theme) {
@@ -49,6 +49,10 @@ const ATTRIBUTES = ['class', 'data-theme']
       ? 'dark'
       : 'light'
   }
+
+  function isResolvedTheme(theme) {
+    return ['light', 'dark'].includes(theme)
+  }
 </script>
 <script>
   import { themeObserver, isTheme } from './store.ts'
@@ -58,6 +62,7 @@ const ATTRIBUTES = ['class', 'data-theme']
   const STORAGE_KEY = 'theme'
   const ATTRIBUTES = ['class', 'data-theme']
   const mediaMatcher = window.matchMedia('(prefers-color-scheme: dark)')
+
   const themeStorage = {
     get: () => localStorage.getItem(STORAGE_KEY),
     set: (value: ResolvedTheme) => localStorage.setItem(STORAGE_KEY, value),
@@ -65,10 +70,7 @@ const ATTRIBUTES = ['class', 'data-theme']
   }
 
   initObserver()
-
-  themeObserver.onThemeChange.add(handleThemeChange)
-  window.addEventListener('storage', handleStorageChange)
-  mediaMatcher.addEventListener('change', handleMediaChange)
+  subscribeEvents()
 
   // ThemeObserverクラスの作成をここで行うと状態が共有できなくなるので、ここで改めて状態の同期を行います。
   // レンダリングの最適化のため、リスナーを登録する前に実行します。
@@ -78,9 +80,17 @@ const ATTRIBUTES = ['class', 'data-theme']
 
     if (isTheme(theme)) {
       themeObserver.setTheme(theme)
+    } else {
+      themeObserver.setTheme('system')
     }
 
     themeObserver.setSystemTheme(systemTheme)
+  }
+
+  function subscribeEvents() {
+    themeObserver.onThemeChange(handleThemeChange)
+    window.addEventListener('storage', handleStorageChange)
+    mediaMatcher.addEventListener('change', handleMediaChange)
   }
 
   function handleThemeChange({ theme, resolvedTheme }: Store) {

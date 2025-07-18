@@ -1,65 +1,85 @@
-import { monoRestrict } from 'mono-event'
-import type { MonoRestrictedEvent } from 'mono-event'
-import { useSyncExternalStore } from 'react'
+import { useStore } from '@nanostores/react'
+import { atom } from 'nanostores'
+import type { PreinitializedWritableAtom } from 'nanostores'
 
 export type Theme = 'light' | 'dark' | 'system'
 export type ResolvedTheme = Extract<Theme, 'light' | 'dark'>
+export type SystemTheme = Extract<Theme, 'light' | 'dark'>
 
 export type Store = {
   theme: Theme
   resolvedTheme: ResolvedTheme
+  systemTheme: SystemTheme
 }
 
 export class ThemeObserver {
-  private _store: Store
-  private _systemTheme: ResolvedTheme
+  private $store: PreinitializedWritableAtom<Store>
+  onThemeChange: (listener: (store: Readonly<Store>) => void) => void
 
-  readonly onThemeChange: MonoRestrictedEvent<Store>
-  private readonly _emitThemeChange: (store: Store) => void
+  constructor() {
+    this.$store = atom<Store>({
+      theme: 'system',
+      resolvedTheme: 'light',
+      systemTheme: 'light',
+    })
 
-  readonly onSystemThemeChange: MonoRestrictedEvent<ResolvedTheme>
-  private readonly _emitSystemThemeChange: (theme: ResolvedTheme) => void
-
-  constructor(
-    { defaultTheme }: { defaultTheme: Theme } = { defaultTheme: 'system' },
-  ) {
-    const systemTheme = defaultTheme === 'system' ? 'light' : defaultTheme
-
-    this._store = {
-      theme: defaultTheme,
-      resolvedTheme: systemTheme,
-    }
-    this._systemTheme = systemTheme
-
-    const { event: onThemeChange, emit: emitThemeChange } =
-      monoRestrict<Store>()
-    this.onThemeChange = onThemeChange
-    this._emitThemeChange = emitThemeChange
-
-    const { event: onSystemThemeChange, emit: emitSystemThemeChange } =
-      monoRestrict<ResolvedTheme>()
-    this.onSystemThemeChange = onSystemThemeChange
-    this._emitSystemThemeChange = emitSystemThemeChange
+    this.onThemeChange = this.$store.subscribe
   }
 
-  public setTheme = (theme: Theme) => {
-    this._store = {
-      theme,
-      resolvedTheme: theme === 'system' ? this._systemTheme : theme,
+  public setTheme = (newTheme: Theme) => {
+    const oldValue = this.$store.get()
+
+    if (newTheme === 'system') {
+      this.$store.set({
+        ...oldValue,
+        theme: 'system',
+        resolvedTheme: oldValue.systemTheme,
+      })
+      return
     }
 
-    this._emitThemeChange(this._store)
+    this.$store.set({
+      ...oldValue,
+      theme: newTheme,
+      resolvedTheme: newTheme,
+    })
   }
 
-  public setSystemTheme = (theme: ResolvedTheme) => {
-    this._systemTheme = theme
-    this._emitSystemThemeChange(theme)
+  public setSystemTheme = (newSystemTheme: SystemTheme) => {
+    const oldValue = this.$store.get()
 
-    this.setTheme(this._store.theme)
+    // If the current theme is 'system', update resolvedTheme to newSystemTheme
+    if (oldValue.theme === 'system') {
+      this.$store.set({
+        ...oldValue,
+        systemTheme: newSystemTheme,
+        resolvedTheme: newSystemTheme,
+      })
+      return
+    }
+
+    this.$store.set({
+      ...oldValue,
+      systemTheme: newSystemTheme,
+    })
   }
 
-  public getThemeSnapshot = () => {
-    return this._store
+  public useTheme = () => {
+    const store = useStore(this.$store)
+
+    return {
+      theme: store.theme,
+      resolvedTheme: store.resolvedTheme,
+    }
+  }
+
+  public getTheme = () => {
+    const store = this.$store.get()
+
+    return {
+      theme: store.theme,
+      resolvedTheme: store.resolvedTheme,
+    }
   }
 
   static isTheme(theme: string): theme is Theme {
@@ -68,25 +88,7 @@ export class ThemeObserver {
 }
 
 export const themeObserver = new ThemeObserver()
+
+export const useTheme = themeObserver.useTheme
 export const setTheme = themeObserver.setTheme
 export const isTheme = ThemeObserver.isTheme
-
-export function useTheme() {
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-}
-
-function subscribe(callback: () => void): () => void {
-  return themeObserver.onThemeChange.add(callback)
-}
-
-function getSnapshot() {
-  return themeObserver.getThemeSnapshot()
-}
-
-const serverSnapshot: Store = {
-  theme: 'system',
-  resolvedTheme: 'light',
-}
-function getServerSnapshot() {
-  return serverSnapshot
-}
