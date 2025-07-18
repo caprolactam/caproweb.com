@@ -1,0 +1,88 @@
+---
+import { TITLE_ID } from '@/components/header.tsx'
+import Layout from '@/components/layout.astro'
+import PostCard from '@/components/post-card.astro'
+import { FilterChipLink } from '@/components/ui/filter-chip.tsx'
+import { listSortedFrontmatters } from '@/lib/frontmatter.ts'
+import { setSearchParamsString } from '@/lib/tags.ts'
+
+const { url } = Astro
+const queryTags = Array.from(new Set(url.searchParams.getAll('tag')))
+
+const allPosts = listSortedFrontmatters()
+const allTags = allPosts.toAllTags()
+const totalPosts = allPosts.toArray().length
+
+const filteredPosts = allPosts.filteredByTags(queryTags)
+const selectablePosts = filteredPosts.toArray()
+const selectableTags = filteredPosts.toAllTags()
+
+export const prerender = false
+---
+
+<Layout breadCrumbs={[{ label: 'ホーム', href: '/' }]}>
+  <Fragment slot='head'>
+    <title>ホーム | Capro Web</title>
+    <meta
+      name='description'
+      content='Web開発に関する反省'
+    />
+  </Fragment>
+  <h1
+    id={TITLE_ID}
+    class='sr-only'
+  >
+    ホーム
+  </h1>
+  <div class='grid gap-4 md:gap-6'>
+    <div>
+      <div class='text-brand-11 text-base'>{`${totalPosts}件の投稿`}</div>
+      <h2 class='flex items-center gap-1 text-lg font-bold sm:text-2xl'>
+        コンテンツ
+      </h2>
+    </div>
+    <ul class='flex flex-wrap items-center gap-2'>
+      {
+        allTags.map((tag) => {
+          const searchParams = setSearchParamsString(url.searchParams, { tag })
+          const isChecked = queryTags.includes(tag)
+          const isDisabled = !selectableTags.includes(tag)
+
+          return (
+            <li>
+              <FilterChipLink
+                checked={isChecked}
+                disabled={isDisabled}
+                href={searchParams.length > 0 ? `?${searchParams}` : '/'}
+              >
+                {tag}
+              </FilterChipLink>
+            </li>
+          )
+        })
+      }
+      <li>
+        <FilterChipLink
+          href='/'
+          disabled={queryTags.length === 0}
+        >
+          クリア
+        </FilterChipLink>
+      </li>
+    </ul>
+    <ul>
+      {
+        selectablePosts.map(({ title, description, image, slug }) => (
+          <li>
+            <PostCard
+              title={title}
+              description={description}
+              url={`/contents/${slug}`}
+              imageSrc={image}
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>

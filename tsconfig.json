@@ -1,12 +1,6 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".storybook/**/*.ts",
-    ".react-router/types/**/*",
-    ".tailwind.config.ts"
-  ],
-  "extends": ["@epic-web/config/typescript"],
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": ["**/*", ".astro/types.d.ts"],
   "compilerOptions": {
     // target, module and lib should be set to esnext, because @cloudflare/workers-types requires it
     // https://www.npmjs.com/package/@cloudflare/workers-types
@@ -14,29 +8,24 @@
     // https://vite.dev/guide/features#target
     "target": "esnext",
     "module": "esnext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": [
-      "@react-router/cloudflare",
-      "@cloudflare/workers-types",
-      "vite/client",
-      "@total-typescript/ts-reset/dom"
-    ],
     "moduleResolution": "Bundler",
-    "esModuleInterop": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["@total-typescript/ts-reset"],
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "noImplicitAny": true,
-    "allowJs": true,
-    "strict": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
     "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "strict": true,
+    "baseUrl": ".",
     "paths": {
-      "#app/*": ["./app/*"],
-      "@/icon-name": [
-        "./app/components/icons/name.d.ts",
-        "./types/icon-name.d.ts"
-      ]
+      "@/*": ["app/*"],
+      "@/icon-name": ["app/components/icons/types.ts", "types/icon-name.d.ts"]
     },
-    "rootDirs": [".", "./.react-router/types"],
-    // Remix takes care of building everything in `remix build`.
-    "noEmit": true
+    "outDir": "dist"
   }
 }

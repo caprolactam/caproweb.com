@@ -36,39 +36,9 @@ jobs:
       - name: 📥 Download deps
         run: npm ci
 
-      - name: 🖼 Build icons
-        run: npm run build:icons
-
       - name: 🔬 Lint
         run: npm run lint
 
-  typecheck:
-    name: ʦ TypeScript
-    runs-on: ubuntu-22.04
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: 💰 Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key:
-            ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-
-      - name: 📥 Download deps
-        run: npm ci
-
-      - name: 🖼 Build icons
-        run: npm run build:icons
-
-      - name: 📃 Copy .dev.vars
-        run: cp .dev.vars.example .dev.vars
-
       - name: 🔎 Type check
-        run: npm run tsc
+        run: npm run typecheck
+ 

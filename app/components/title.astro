@@ -1,0 +1,77 @@
+---
+import { formatDate } from '@/lib/utils.ts'
+import { TITLE_ID } from './header.tsx'
+import { Icon } from './ui/icon.tsx'
+
+interface Props {
+  title: string
+  publishedAt: Date
+  updatedAt?: Date
+  imageSrc?: string
+}
+
+const {
+  title,
+  publishedAt: publishedAtProp,
+  updatedAt: updatedAtProp,
+  imageSrc,
+} = Astro.props
+
+const publishedAt = formatDate(publishedAtProp)
+const updatedAt = updatedAtProp ? formatDate(updatedAtProp) : null
+---
+
+<div class='not-prose mb-12'>
+  <div class='mb-6 flex items-end gap-6'>
+    <div
+      class='to-brand-3 dark:from-brand-12 dark:to-brand-12/90 flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-gradient-to-t from-transparent shadow-xs md:size-32 md:rounded-xl'
+    >
+      {
+        imageSrc ? (
+          <img
+            src={imageSrc}
+            alt={title}
+            class='size-full object-cover'
+          />
+        ) : (
+          <Icon
+            name='article'
+            className='text-brand-11 dark:text-brand-7 size-16 md:size-24'
+          />
+        )
+      }
+    </div>
+    <div class='flex flex-1 flex-col gap-2'>
+      <h1
+        id={TITLE_ID}
+        class='text-lg font-bold sm:text-3xl'
+      >
+        {title}
+      </h1>
+      <div class='grid grid-cols-2 gap-2 text-sm md:gap-3'>
+        <div class='grid'>
+          投稿日
+          <time
+            datetime={publishedAt}
+            class='text-base'
+          >
+            {publishedAt}
+          </time>
+        </div>
+        {
+          updatedAt && (
+            <div class='grid'>
+              最終更新日
+              <time
+                datetime={updatedAt}
+                class='text-base'
+              >
+                {updatedAt}
+              </time>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>

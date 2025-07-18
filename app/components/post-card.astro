@@ -1,0 +1,57 @@
+---
+import { Icon } from './ui/icon.tsx'
+
+interface Props {
+  title: string
+  description: string
+  url: string
+  imageSrc?: string
+  isExternal?: boolean
+}
+
+const { title, description, url, imageSrc, isExternal = false } = Astro.props
+---
+
+<a
+  href={url}
+  class='group flex gap-4 py-2'
+  data-astro-prefetch
+>
+  <div
+    class='to-brand-3 dark:from-brand-12 dark:to-brand-12/90 flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md bg-gradient-to-t from-transparent shadow-xs'
+  >
+    {
+      imageSrc ? (
+        <img
+          src={imageSrc}
+          alt={title}
+          class='size-full object-cover'
+        />
+      ) : (
+        <Icon
+          name='article'
+          size={36}
+          className='text-brand-11 dark:text-brand-7'
+        />
+      )
+    }
+  </div>
+  <div class='min-w-0 flex-1 self-center'>
+    <div
+      class='truncate text-base font-medium underline-offset-2 group-hover:underline'
+    >
+      {title}
+    </div>
+    <div class='text-brand-11 w-full truncate text-sm'>{description}</div>
+  </div>
+  {
+    isExternal && (
+      <div class='text-brand-11 inline-flex shrink-0 items-center self-center'>
+        <Icon
+          name='open-in-new'
+          size={20}
+        />
+      </div>
+    )
+  }
+</a>

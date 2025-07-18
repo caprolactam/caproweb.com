@@ -1,0 +1,93 @@
+[data-demo-radio] {
+  --inner-circle-duration: 0.1s;
+  --inner-circle-delay: 0s;
+  --mask-duration: 0.2s;
+  --mask-delay: 0.1s;
+}
+
+[data-demo-radio][data-state='checked'] {
+  --inner-circle-duration: 0.2s;
+  --inner-circle-delay: 0.1s;
+  --mask-duration: 0.1s;
+  --mask-delay: 0s;
+}
+
+[data-demo-radio] mask > circle {
+  animation: var(--mask-duration, 0s) var(--mask-delay, 0s);
+  transform-origin: center;
+}
+
+[data-demo-radio][data-animated='false'] mask > circle {
+  animation: none;
+}
+
+[data-demo-radio][data-state='unchecked'] mask > circle {
+  animation-name: mask-circle-grow;
+  animation-timing-function: ease-out;
+}
+
+[data-demo-radio][data-state='checked'] mask > circle {
+  animation-name: mask-circle-shrink;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes mask-circle-shrink {
+  from {
+    transform: none;
+  }
+  to {
+    transform: scale3d(0, 0, 1);
+  }
+}
+
+@keyframes mask-circle-grow {
+  from {
+    transform: scale3d(0, 0, 1);
+  }
+  to {
+    transform: none;
+  }
+}
+
+[data-demo-radio] [data-demo-radio-indicator] {
+  animation: var(--inner-circle-duration, 0s) var(--inner-circle-delay, 0s);
+  transform-origin: center;
+  opacity: 0;
+}
+
+[data-demo-radio][data-animated='false'] [data-demo-radio-indicator] {
+  animation: none;
+}
+
+[data-demo-radio][data-state='unchecked'] [data-demo-radio-indicator] {
+  animation-name: inner-circle-grow;
+  animation-timing-function: ease-in-out;
+}
+
+[data-demo-radio][data-state='checked'] [data-demo-radio-indicator] {
+  animation-name: inner-circle-shrink;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+@keyframes inner-circle-shrink {
+  from {
+    opacity: 1;
+    transform: scale3d(2, 2, 1);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes inner-circle-grow {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(2, 2, 1);
+  }
+}

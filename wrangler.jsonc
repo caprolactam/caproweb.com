@@ -1,0 +1,9 @@
+{
+  "name": "caproweb",
+  "main": "./dist/_worker.js/index.js",
+  "compatibility_date": "2025-07-18",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": "./dist"
+  }
+}
