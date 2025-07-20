@@ -1,7 +1,6 @@
 import cloudflare from '@astrojs/cloudflare'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
-import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -60,7 +59,7 @@ export default defineConfig({
       ],
     ],
   },
-  integrations: [react(), mdx(), sitemap()],
+  integrations: [react(), mdx()],
   vite: {
     resolve: {
       // Use react-dom/server.edge instead of react-dom/server.browser for React 19.

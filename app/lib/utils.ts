@@ -7,7 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * `Date`を`YYYY-MM-DD`形式の文字列に変換する
+ * `Date`を`YYYY-MM-DD`形式の文字列に変換する(ISO 8601準拠)
+ * https://ja.wikipedia.org/wiki/ISO_8601#%E5%B9%B4%E3%81%A8%E6%9C%88%E3%81%A8%E6%97%A5
  *
  * ```ts
  * const date = new Date()
