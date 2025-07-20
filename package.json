@@ -23,7 +23,7 @@
     "*.{js,jsx,ts,tsx,css,json,yaml,astro}": "prettier --write"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.4.1",
+    "@forge42/seo-tools": "^1.4.5",
     "@nanostores/react": "^1.0.0",
     "@radix-ui/colors": "^3.0.0",
     "@standard-schema/spec": "^1.0.0",
