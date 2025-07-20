@@ -5,7 +5,13 @@ import { listSortedFrontmatters } from '@/lib/frontmatter.ts'
 import { formatDate } from '@/lib/utils.ts'
 
 export const GET: APIRoute = async ({ site }) => {
-  const domain = site?.origin || 'https://caproweb.com'
+  const domain = site?.origin
+  if (!domain) {
+    throw new Error(
+      'domain is not defined. Make sure to set the `site` option in your Astro config.',
+    )
+  }
+
   const xml = await createSitemap(domain)
 
   return new Response(xml, {
@@ -16,6 +22,13 @@ export const GET: APIRoute = async ({ site }) => {
 }
 
 async function createSitemap(domain: string) {
+  const staticRoutes: SitemapRoute[] = [
+    {
+      url: '/',
+      priority: 1.0,
+    },
+  ]
+
   const posts = listSortedFrontmatters().toArray()
   const postRoutes = posts.map(
     (post) =>
@@ -28,7 +41,7 @@ async function createSitemap(domain: string) {
 
   const sitemap = await generateSitemap({
     domain,
-    routes: [{ url: '/', priority: 1.0 }, ...postRoutes],
+    routes: [...staticRoutes, ...postRoutes],
   })
 
   return sitemap
