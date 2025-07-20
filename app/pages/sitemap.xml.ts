@@ -17,11 +17,14 @@ export const GET: APIRoute = async ({ site }) => {
 
 async function createSitemap(domain: string) {
   const posts = listSortedFrontmatters().toArray()
-  const postRoutes: Array<SitemapRoute> = posts.map((post) => ({
-    url: `/contents/${post.slug}`,
-    lastModified: formatDate(post.updatedAt ?? post.publishedAt),
-    priority: 0.5,
-  }))
+  const postRoutes = posts.map(
+    (post) =>
+      ({
+        url: `/contents/${post.slug}`,
+        lastmod: formatDate(post.updatedAt ?? post.publishedAt),
+        priority: 0.5,
+      }) satisfies SitemapRoute,
+  )
 
   const sitemap = await generateSitemap({
     domain,
