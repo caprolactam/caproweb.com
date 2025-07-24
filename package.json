@@ -27,7 +27,7 @@
     "@nanostores/react": "^1.0.0",
     "@radix-ui/colors": "^3.0.0",
     "@standard-schema/spec": "^1.0.0",
-    "astro": "^5.12.0",
+    "astro": "^5.12.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
