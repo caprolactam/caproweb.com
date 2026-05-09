@@ -23,30 +23,15 @@ const themes: Record<
 > = {
   system: {
     label: 'システム',
-    icon: (
-      <Icon
-        name='computer'
-        size={18}
-      />
-    ),
+    icon: <Icon name='computer' size={18} />,
   },
   light: {
     label: 'ライト',
-    icon: (
-      <Icon
-        name='light-mode'
-        size={20}
-      />
-    ),
+    icon: <Icon name='light-mode' size={20} />,
   },
   dark: {
     label: 'ダーク',
-    icon: (
-      <Icon
-        name='dark-mode'
-        size={20}
-      />
-    ),
+    icon: <Icon name='dark-mode' size={20} />,
   },
 }
 
@@ -56,17 +41,11 @@ export function ThemePicker() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <IconButton
-          aria-label='テーマの変更'
-          variant='ghost'
-        >
+        <IconButton aria-label='テーマの変更' variant='ghost'>
           <ThemeIcon resolvedTheme={resolvedTheme} />
         </IconButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align='end'
-        sideOffset={4}
-      >
+      <DropdownMenuContent align='end' sideOffset={4}>
         <DropdownMenuRadioGroup
           value={theme}
           onValueChange={(value) => {
@@ -76,10 +55,7 @@ export function ThemePicker() {
           }}
         >
           {strictEntries(themes).map(([value, { label }]) => (
-            <DropdownMenuRadioItem
-              key={value}
-              value={value}
-            >
+            <DropdownMenuRadioItem key={value} value={value}>
               <div className='flex-1'>{label}</div>
               {themes[value].icon}
             </DropdownMenuRadioItem>
@@ -103,10 +79,7 @@ function ThemeIcon({ resolvedTheme }: { resolvedTheme: ResolvedTheme }) {
     )
 
   return (
-    <AnimatePresence
-      mode='wait'
-      initial={false}
-    >
+    <AnimatePresence mode='wait' initial={false}>
       <motion.div
         key={resolvedTheme}
         initial={{ opacity: 0 }}

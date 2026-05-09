@@ -6,22 +6,14 @@ import { Icon } from './icon.tsx'
 function DropdownMenu({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return (
-    <DropdownMenuPrimitive.Root
-      data-slot='dropdown-menu'
-      {...props}
-    />
-  )
+  return <DropdownMenuPrimitive.Root data-slot='dropdown-menu' {...props} />
 }
 
 function DropdownMenuPortal({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
   return (
-    <DropdownMenuPrimitive.Portal
-      data-slot='dropdown-menu-portal'
-      {...props}
-    />
+    <DropdownMenuPrimitive.Portal data-slot='dropdown-menu-portal' {...props} />
   )
 }
 
@@ -63,10 +55,7 @@ function DropdownMenuGroup({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
   return (
-    <DropdownMenuPrimitive.Group
-      data-slot='dropdown-menu-group'
-      {...props}
-    />
+    <DropdownMenuPrimitive.Group data-slot='dropdown-menu-group' {...props} />
   )
 }
 
@@ -111,10 +100,7 @@ function DropdownMenuCheckboxItem({
     >
       <span className='pointer-events-none absolute left-2 flex size-3.5 items-center justify-center'>
         <DropdownMenuPrimitive.ItemIndicator>
-          <Icon
-            name='check'
-            size={16}
-          />
+          <Icon name='check' size={16} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -152,10 +138,7 @@ function DropdownMenuRadioItem({
         forceMount
         className='data-[state=unchecked]:invisible'
       >
-        <Icon
-          size={20}
-          name='check'
-        />
+        <Icon size={20} name='check' />
       </DropdownMenuPrimitive.ItemIndicator>
       {children}
     </DropdownMenuPrimitive.RadioItem>
@@ -214,12 +197,7 @@ function DropdownMenuShortcut({
 function DropdownMenuSub({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
-  return (
-    <DropdownMenuPrimitive.Sub
-      data-slot='dropdown-menu-sub'
-      {...props}
-    />
-  )
+  return <DropdownMenuPrimitive.Sub data-slot='dropdown-menu-sub' {...props} />
 }
 
 function DropdownMenuSubTrigger({
@@ -241,11 +219,7 @@ function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      <Icon
-        name='chevron-right'
-        className='ml-auto'
-        size={16}
-      />
+      <Icon name='chevron-right' className='ml-auto' size={16} />
     </DropdownMenuPrimitive.SubTrigger>
   )
 }

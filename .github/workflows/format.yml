@@ -1,0 +1,47 @@
+name: Format
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    if: github.repository == 'caprolactam/caproweb.com'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.FORMAT_PAT }}
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: Format
+        run: npm run format
+
+      - name: Commit
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add .
+          git restore .github/workflows # PAT doesn't have permission to push workflow changes
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No formatting changes"
+            exit 0
+          fi
+          git commit -m "chore: format"
+          git push
+          echo "Pushed formatting changes https://github.com/$GITHUB_REPOSITORY/commit/$(git rev-parse HEAD)"

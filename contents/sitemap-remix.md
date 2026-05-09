@@ -6,6 +6,7 @@ keywords:
   - remix
   - web
 ---
+
 Remixにおいてサイトマップの送信を検討する場合、[リソースルート](https://remix.run/docs/en/main/guides/resource-routes)を用いることが考えらえれる。[^sitemap-from-resource-route]一方で、送信されるリソースがリクエストに応じて動的に変更される[^dynamic-resource]のでなければ、静的アセットとして提供することがより単純[^comparison-of-the-two-methods]な方法となる。
 
 この記事では、[hi-ogawa氏のアイデア](https://github.com/remix-run/remix/issues/8122#issuecomment-1826217256)をもとにRemix + Vite + [@nasa-gcn/remix-seo](https://github.com/nasa-gcn/remix-seo)でサイトマップを作成し、静的に送信する方法を紹介する。また[ソースコードはこちら。](https://github.com/caprolactam/remix-cloudflare-sitemap)
@@ -207,13 +208,22 @@ app.use(express.static('build/client/sitemap.xml', { maxAge: 300 }))
 
 以上のメリット・デメリットのほかに、ビルド時にルートが確定可能か否かが判断基準となるだろう。
 
-[^sitemap-from-resource-route]: リソースルートを用いた方法については、[The Epic Stack](https://github.com/epicweb-dev/epic-stack)を見よ。具体的には、以下の通りである。[サーバーを起動するファイル(`server/index.ts)`](https://github.com/epicweb-dev/epic-stack/blob/ec0c3c49a4111bc55466e68675aa7dfb46ebb9c5/server/index.ts)においてbuildファイルをRemixアダプターの[`getLoadContext()`](https://remix.run/docs/en/main/route/loader#context)に渡す。次に
-[リソースルート(`app/routes/_seo+/sitemap[.]xml.ts`)](https://github.com/epicweb-dev/epic-stack/blob/ec0c3c49a4111bc55466e68675aa7dfb46ebb9c5/app/routes/_seo%2B/sitemap%5B.%5Dxml.ts)の`loader`で引数`context`から当該buildファイルを受け取り、`generateSitemap()`に渡すことでサイトマップを含むリスポンスを作成・送信する。
+[^sitemap-from-resource-route]:
+    リソースルートを用いた方法については、[The Epic Stack](https://github.com/epicweb-dev/epic-stack)を見よ。具体的には、以下の通りである。[サーバーを起動するファイル(`server/index.ts)`](https://github.com/epicweb-dev/epic-stack/blob/ec0c3c49a4111bc55466e68675aa7dfb46ebb9c5/server/index.ts)においてbuildファイルをRemixアダプターの[`getLoadContext()`](https://remix.run/docs/en/main/route/loader#context)に渡す。次に
+    [リソースルート(`app/routes/_seo+/sitemap[.]xml.ts`)](https://github.com/epicweb-dev/epic-stack/blob/ec0c3c49a4111bc55466e68675aa7dfb46ebb9c5/app/routes/_seo%2B/sitemap%5B.%5Dxml.ts)の`loader`で引数`context`から当該buildファイルを受け取り、`generateSitemap()`に渡すことでサイトマップを含むリスポンスを作成・送信する。
+
 [^dynamic-resource]: たとえば、ユーザーのリクエストに応じて動的に変更される場合、あるいはリアルタイムでリソースに変更が加わる場合である。
+
 [^comparison-of-the-two-methods]: 具体的には、本記事の[静的アセットとリソースルートの比較](#comparison)を見よ。
+
 [^config-of-remix-seo]: 本文中で言及した点について設定を行う場合は、[`nasa-gcn/remix-seo`](https://github.com/nasa-gcn/remix-seo?tab=readme-ov-file#configuration)を見よ。またサーバーサイドでのみ実行するコードを`handle`関数に実行したい場合は、[Can't use server-side code to get sitemap entries · Issue #17 · nasa-gcn/remix-seo](https://github.com/nasa-gcn/remix-seo/issues/17)を参照せよ。
+
 [^splat-route-path]: これはRemixにおいてSplat Routeのpathが`*`として解釈されるからである。このことは、`npx remix routes`において確認可能である。
+
 [^post-script]: "post" スクリプトの動作については、[scripts | npm Docs](https://docs.npmjs.com/cli/v10/using-npm/scripts#pre--post-scripts)を参照せよ。
+
 [^react-dom-server-api]: [Server React DOM APIs - React](https://react.dev/reference/react-dom/server)を見よ。
+
 [^vite-public-dir]: Viteにおけるpublicディレクトリの扱いについては、[Static Asset Handling | Vite](https://vitejs.dev/guide/assets.html#the-public-directory)を見よ。
+
 [^cloudflare-pages-static-asset]: [Pricing | Cloudflare Pages docs](https://developers.cloudflare.com/pages/functions/pricing/#static-asset-requests)を見よ。また、Cloudflare Workersについても同様である。[Static Assets | Cloudflare Workers docs](https://developers.cloudflare.com/workers/static-assets/#pricing)

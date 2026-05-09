@@ -27,11 +27,7 @@ export function Demo() {
               htmlFor={radioId}
               className='flex h-10 cursor-pointer items-center gap-4 select-none'
             >
-              <RadioGroupItem
-                type='button'
-                value={framework}
-                id={radioId}
-              />
+              <RadioGroupItem type='button' value={framework} id={radioId} />
               {framework}
             </label>
           )
@@ -59,8 +55,9 @@ const useRadioGroupContext = () => {
   return context
 }
 
-interface RadioGroupProps
-  extends React.ComponentPropsWithRef<typeof RadioGroupPrimitive.Root> {}
+interface RadioGroupProps extends React.ComponentPropsWithRef<
+  typeof RadioGroupPrimitive.Root
+> {}
 
 function RadioGroup({ children, className, ...props }: RadioGroupProps) {
   const initialRenderedRef = React.useRef(true)
@@ -86,11 +83,10 @@ function RadioGroup({ children, className, ...props }: RadioGroupProps) {
   )
 }
 
-interface RadioGroupItemProps
-  extends Omit<
-    React.ComponentPropsWithRef<typeof RadioGroupPrimitive.Item>,
-    'asChild' | 'children'
-  > {}
+interface RadioGroupItemProps extends Omit<
+  React.ComponentPropsWithRef<typeof RadioGroupPrimitive.Item>,
+  'asChild' | 'children'
+> {}
 
 function RadioGroupItem({ className, ref, ...props }: RadioGroupItemProps) {
   const { initialRenderedRef } = useRadioGroupContext()
@@ -112,17 +108,8 @@ function RadioGroupItem({ className, ref, ...props }: RadioGroupItemProps) {
     >
       <svg viewBox='0 0 20 20'>
         <mask id={maskId}>
-          <rect
-            width='100%'
-            height='100%'
-            fill='white'
-          />
-          <circle
-            cx={10}
-            cy={10}
-            r={8}
-            fill='black'
-          />
+          <rect width='100%' height='100%' fill='white' />
+          <circle cx={10} cy={10} r={8} fill='black' />
         </mask>
         <circle
           cx={10}

@@ -15,20 +15,20 @@ export default defineConfig({
   site: 'https://caproweb.com',
   output: 'static',
   adapter: cloudflare({
-    platformProxy: {
-      configPath: './wrangler.jsonc',
-    },
+    configPath: './wrangler.jsonc',
   }),
   prefetch: {
     defaultStrategy: 'hover',
-    prefetchAll: false,
+    prefetchAll: true,
   },
   srcDir: './app',
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
-    preserveScriptOrder: true,
-    headingIdCompat: true,
+    queuedRendering: {
+      enabled: true,
+    },
+    rustCompiler: true,
   },
   markdown: {
     // do it manually

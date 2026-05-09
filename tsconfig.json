@@ -1,16 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "include": ["**/*", ".astro/types.d.ts"],
+  "include": [".astro/types.d.ts", "**/*"],
   "compilerOptions": {
-    // target, module and lib should be set to esnext, because @cloudflare/workers-types requires it
-    // https://www.npmjs.com/package/@cloudflare/workers-types
-    // Vite ignores the target when building the app, so don't worry about it.
-    // https://vite.dev/guide/features#target
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "Bundler",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["@total-typescript/ts-reset"],
+    "types": ["@total-typescript/ts-reset", "vite/client", "@types/node"],
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
@@ -21,10 +17,12 @@
     "allowJs": true,
     "jsx": "preserve",
     "strict": true,
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"],
-      "@/icon-name": ["app/components/icons/types.ts", "types/icon-name.d.ts"]
+      "@/*": ["./app/*"],
+      "@/icon-name": [
+        "./app/components/icons/types.ts",
+        "./types/icon-name.d.ts"
+      ]
     },
     "outDir": "dist"
   }

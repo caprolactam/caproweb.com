@@ -81,10 +81,7 @@ export function Header() {
       <div className='mx-auto h-full w-full max-w-3xl px-4 md:px-6'>
         <div className='flex h-full flex-nowrap items-center justify-between gap-2'>
           {isMobile ? (
-            <AnimatePresence
-              mode='wait'
-              initial={false}
-            >
+            <AnimatePresence mode='wait' initial={false}>
               {shouldSwtich && goTop}
               {!shouldSwtich && (
                 <motion.div

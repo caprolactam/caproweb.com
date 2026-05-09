@@ -32,7 +32,8 @@ const iconButtonVariants = cva(
 )
 
 interface IconButtonProp
-  extends Omit<React.ComponentPropsWithRef<'button'>, 'aria-abel'>,
+  extends
+    Omit<React.ComponentPropsWithRef<'button'>, 'aria-abel'>,
     VariantProps<typeof iconButtonVariants> {
   'aria-label': string
   asChild?: boolean
