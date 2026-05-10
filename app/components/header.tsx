@@ -1,7 +1,7 @@
+import { useIsMobile } from '#app/lib/use-media-query.ts'
 import { motion, AnimatePresence } from 'motion/react'
 import type { HTMLMotionProps } from 'motion/react'
 import React from 'react'
-import { useIsMobile } from '@/lib/use-media-query.ts'
 import { ThemePicker } from './theme/picker.tsx'
 
 export const TITLE_ID = 'page-title'
@@ -119,15 +119,32 @@ function HomepageIcon() {
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'
-        viewBox='0 0 200 200'
-        fill='none'
-        className='size-4'
+        viewBox='0 0 100 100'
+        width={20}
+        height={20}
       >
         <circle
-          cx='100'
-          cy='100'
-          r='100'
-          className='fill-[#2b9a66] dark:fill-[#33b074]'
+          cx='50'
+          cy='50'
+          r='48'
+          stroke-width='1.5'
+          stroke='#0066b3'
+          fill='white'
+        />
+        <circle cx='50' cy='50' r='43' stroke-width='0' fill='#0066b3' />
+        <path
+          d='
+      M 81.113,27.373
+      L 47.172,61.314
+      Q 82.527,65.556
+        23.130,76.870
+      Q 34.444,17.473
+        38.686,52.828
+      L 72.627,18.887
+      Z
+    '
+          stroke-width='0'
+          fill='white'
         />
       </svg>
       Capro Web

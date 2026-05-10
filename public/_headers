@@ -4,5 +4,3 @@
   Cache-Control: private, max-age=3600
 /images/*
   Cache-Control: private, max-age=3600
-/fonts/*
-  Cache-Control: private, max-age=3600

@@ -1,8 +1,8 @@
+import { listSortedFrontmatters } from '#app/lib/frontmatter.ts'
+import { formatDate } from '#app/lib/utils.ts'
 import { generateSitemap } from '@forge42/seo-tools/sitemap'
 import type { SitemapRoute } from '@forge42/seo-tools/sitemap'
 import type { APIRoute } from 'astro'
-import { listSortedFrontmatters } from '@/lib/frontmatter.ts'
-import { formatDate } from '@/lib/utils.ts'
 
 export const GET: APIRoute = async ({ site }) => {
   const domain = site?.origin

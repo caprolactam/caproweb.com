@@ -1,6 +1,6 @@
+import type { IconName } from '#app/icon-name'
+import { cn } from '#app/lib/utils.ts'
 import type { SVGProps } from 'react'
-import type { IconName } from '@/icon-name'
-import { cn } from '@/lib/utils.ts'
 
 export function Icon({
   name,

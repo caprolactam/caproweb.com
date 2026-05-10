@@ -3,7 +3,6 @@ import * as path from 'node:path'
 import type { StandardSchemaV1 } from '@standard-schema/spec'
 import fm from 'front-matter'
 import { glob } from 'glob'
-import { format } from 'prettier'
 import type { Plugin } from 'vite'
 import { normalizePath } from 'vite'
 
@@ -134,9 +133,7 @@ async function serializeFrontmatters(frontmatters: Array<any>) {
     ``,
   ].join('\n')
 
-  const formatted = await format(output, { parser: 'typescript' })
-
-  return formatted
+  return output
 }
 
 async function writeIfChanged(filepath: string, newContent: string) {

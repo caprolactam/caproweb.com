@@ -1,9 +1,9 @@
 ---
 import { render } from 'astro:content'
-import Layout from '@/components/layout.astro'
-import Title from '@/components/title.astro'
-import { listSortedContents } from '@/lib/content.ts'
-import { getSlug } from '@/lib/frontmatter.ts'
+import Layout from '#app/components/layout.astro'
+import Title from '#app/components/title.astro'
+import { listSortedContents } from '#app/lib/content.ts'
+import { getSlug } from '#app/lib/frontmatter.ts'
 
 export async function getStaticPaths() {
   const posts = await listSortedContents()

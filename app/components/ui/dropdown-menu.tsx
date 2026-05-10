@@ -1,6 +1,6 @@
+import { cn } from '#app/lib/utils.ts'
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui'
 import React from 'react'
-import { cn } from '@/lib/utils.ts'
 import { Icon } from './icon.tsx'
 
 function DropdownMenu({

@@ -1,10 +1,10 @@
 ---
-import { TITLE_ID } from '@/components/header.tsx'
-import Layout from '@/components/layout.astro'
-import PostCard from '@/components/post-card.astro'
-import { FilterChipLink } from '@/components/ui/filter-chip.tsx'
-import { listSortedFrontmatters } from '@/lib/frontmatter.ts'
-import { setSearchParamsString } from '@/lib/tags.ts'
+import { TITLE_ID } from '#app/components/header.tsx'
+import Layout from '#app/components/layout.astro'
+import PostCard from '#app/components/post-card.astro'
+import { FilterChipLink } from '#app/components/ui/filter-chip.tsx'
+import { listSortedFrontmatters } from '#app/lib/frontmatter.ts'
+import { setSearchParamsString } from '#app/lib/tags.ts'
 
 const { url } = Astro
 const queryTags = Array.from(new Set(url.searchParams.getAll('tag')))

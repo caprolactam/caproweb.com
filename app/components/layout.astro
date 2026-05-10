@@ -1,12 +1,12 @@
 ---
-import BreadCrumbs from '@/components/breadcrumbs.astro'
-import type { Props as BreadCrumbsProps } from '@/components/breadcrumbs.astro'
-import Footer from '@/components/footer.astro'
-import { Header } from '@/components/header.tsx'
-import Main from '@/components/main.astro'
-import ThemeScript from '@/components/theme/script.astro'
+import BreadCrumbs from '#app/components/breadcrumbs.astro'
+import type { Props as BreadCrumbsProps } from '#app/components/breadcrumbs.astro'
+import Footer from '#app/components/footer.astro'
+import { Header } from '#app/components/header.tsx'
+import Main from '#app/components/main.astro'
+import ThemeScript from '#app/components/theme/script.astro'
 
-import '@/styles/tailwind.css'
+import '#app/styles/tailwind.css'
 
 interface Props {
   breadCrumbs?: BreadCrumbsProps['links']
@@ -37,12 +37,14 @@ const { breadCrumbs } = Astro.props
     <link
       rel='icon'
       type='image/svg+xml'
+      sizes='any'
       href='/favicons/favicon.svg'
     />
+    <link rel="manifest" href="/manifest.json" />
     <link
       rel='preload'
       as='font'
-      href='/fonts/commit-mono.woff2'
+      href='/fonts/cascadia-mono.woff2'
       crossorigin='anonymous'
     />
     <link

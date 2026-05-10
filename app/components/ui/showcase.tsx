@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils.ts'
+import { cn } from '#app/lib/utils.ts'
 
 export function Showcase({
   children,

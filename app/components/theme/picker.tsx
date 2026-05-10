@@ -1,16 +1,16 @@
-import { AnimatePresence, motion } from 'motion/react'
-import type React from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-} from '@/components/ui/dropdown-menu.tsx'
-import { IconButton } from '@/components/ui/icon-button.tsx'
-import { Icon } from '@/components/ui/icon.tsx'
-import { useHydrated } from '@/lib/use-hydrated.ts'
-import { strictEntries } from '@/lib/utils.ts'
+} from '#app/components/ui/dropdown-menu.tsx'
+import { IconButton } from '#app/components/ui/icon-button.tsx'
+import { Icon } from '#app/components/ui/icon.tsx'
+import { useHydrated } from '#app/lib/use-hydrated.ts'
+import { strictEntries } from '#app/lib/utils.ts'
+import { AnimatePresence, motion } from 'motion/react'
+import type React from 'react'
 import { useTheme, setTheme, isTheme } from './store.ts'
 import type { ResolvedTheme, Theme } from './store.ts'
 

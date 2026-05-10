@@ -3,13 +3,16 @@
   "private": true,
   "license": "MIT",
   "type": "module",
+  "imports": {
+    "#app/*": "./app/*"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "start": "wrangler dev",
     "astro": "astro",
     "types": "wrangler types",
-    "format": "oxfmt --write",
+    "format": "oxfmt",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "typecheck": "npm run types && tsc --noEmit",
