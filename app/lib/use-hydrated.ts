@@ -1,4 +1,4 @@
-/*!
+/**
  * Adapted from
  * - sergiodxa/remix-utils
  *   - MIT https://github.com/sergiodxa/remix-utils/blob/main/LICENSE

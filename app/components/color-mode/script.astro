@@ -1,0 +1,36 @@
+<script is:inline>
+  {
+    /**
+     * フラッシュを避けるため head 内で即時実行
+     */
+  }
+
+  const ALLOWED_THEMES = ['light', 'dark']
+  const STORAGE_KEY = 'color-mode'
+
+  try {
+    const themeInStorage = localStorage.getItem(STORAGE_KEY)
+    const theme = isValidTheme(themeInStorage) ? themeInStorage : getSystemTheme()
+
+    updateDOM(theme)
+  } catch {}
+
+  function updateDOM(theme) {
+    const el = document.documentElement
+
+    el.classList.remove(...ALLOWED_THEMES)
+    el.classList.add(theme)
+    el.dataset.colorMode = theme
+    el.style.colorScheme = theme
+  }
+
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  }
+
+  function isValidTheme(theme) {
+    return ALLOWED_THEMES.includes(theme)
+  }
+</script>

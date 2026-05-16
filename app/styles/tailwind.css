@@ -31,7 +31,7 @@
     U+2215, U+FEFF, U+FFFD;
 }
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: sans-serif;

@@ -1,7 +1,8 @@
 ---
 import { formatDate } from '#app/lib/utils.ts'
-import { TITLE_ID } from './header.tsx'
 import { Icon } from './ui/icon.tsx'
+
+export const TITLE_ID = 'article-title'
 
 interface Props {
   title: string
@@ -24,7 +25,7 @@ const updatedAt = updatedAtProp ? formatDate(updatedAtProp) : null
 <div class='not-prose mb-12'>
   <div class='mb-6 flex items-end gap-6'>
     <div
-      class='to-brand-3 dark:from-brand-12 dark:to-brand-12/90 flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-gradient-to-t from-transparent shadow-xs md:size-32 md:rounded-xl'
+      class='to-brand-3 dark:from-brand-12 dark:to-brand-12/90 flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-linear-to-t from-transparent shadow-xs md:size-32 md:rounded-xl'
     >
       {
         imageSrc ? (

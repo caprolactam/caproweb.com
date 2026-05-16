@@ -2,9 +2,9 @@
 import BreadCrumbs from '#app/components/breadcrumbs.astro'
 import type { Props as BreadCrumbsProps } from '#app/components/breadcrumbs.astro'
 import Footer from '#app/components/footer.astro'
-import { Header } from '#app/components/header.tsx'
 import Main from '#app/components/main.astro'
-import ThemeScript from '#app/components/theme/script.astro'
+import ThemeScript from '#app/components/color-mode/script.astro'
+import Header from './header.astro'
 
 import '#app/styles/tailwind.css'
 
@@ -42,12 +42,6 @@ const { breadCrumbs } = Astro.props
     />
     <link rel="manifest" href="/manifest.json" />
     <link
-      rel='preload'
-      as='font'
-      href='/fonts/cascadia-mono.woff2'
-      crossorigin='anonymous'
-    />
-    <link
       rel='sitemap'
       href='/sitemap-index.xml'
     />
@@ -55,10 +49,11 @@ const { breadCrumbs } = Astro.props
       name='generator'
       content={Astro.generator}
     />
+    <ThemeScript />
     <slot name='head' />
   </head>
   <body class='flex min-h-screen flex-col'>
-    <Header client:load />
+    <Header />
     <Main class='my-8 flex-1 md:mt-12 md:mb-36'>
       <slot />
     </Main>
@@ -72,5 +67,4 @@ const { breadCrumbs } = Astro.props
     }
     <Footer class='shrink-0' />
   </body>
-  <ThemeScript />
 </html>

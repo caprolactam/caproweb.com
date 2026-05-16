@@ -44,3 +44,7 @@ export function strictKeys<T extends { [key: string]: unknown }>(
 ): (keyof T)[] {
   return Object.keys(obj)
 }
+
+export function range(length: number): Array<number> {
+  return Array.from({ length }, (_, i) => i)
+}

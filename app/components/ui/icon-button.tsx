@@ -1,7 +1,8 @@
-import { cn } from '#app/lib/utils.ts'
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
-import { Slot } from 'radix-ui'
+import { useState, useEffect } from 'react'
+import { usePrefersReducedMotion } from '#app/lib/prefers-reduced-motion.ts'
+import { cn } from '#app/lib/utils.ts'
 
 const iconButtonVariants = cva(
   [
@@ -33,10 +34,11 @@ const iconButtonVariants = cva(
 
 interface IconButtonProp
   extends
-    Omit<React.ComponentPropsWithRef<'button'>, 'aria-abel'>,
+    Omit<React.ComponentPropsWithRef<'button'>, 'children'>,
     VariantProps<typeof iconButtonVariants> {
-  'aria-label': string
-  asChild?: boolean
+  label: string
+  timing?: number
+  children: React.ReactNode | ((isBooped: boolean) => React.ReactNode)
 }
 
 function IconButton({
@@ -44,12 +46,33 @@ function IconButton({
   variant,
   className,
   children,
-  asChild = false,
+  label,
+  timing = 150,
+  onMouseEnter,
   ...props
 }: IconButtonProp) {
-  const Comp = asChild ? Slot.Root : 'button'
+  const [isBooped, setIsBooped] = useState(false)
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  useEffect(
+    function cleanupBoop() {
+      if (!isBooped) {
+        return
+      }
+
+      const timeoutId = window.setTimeout(() => {
+        setIsBooped(false)
+      }, timing)
+
+      return () => {
+        window.clearTimeout(timeoutId)
+      }
+    },
+    [isBooped, timing],
+  )
+
   return (
-    <Comp
+    <button
       {...props}
       className={cn(
         iconButtonVariants({
@@ -58,9 +81,17 @@ function IconButton({
         }),
         className,
       )}
+      onMouseEnter={(event) => {
+        if (!prefersReducedMotion) {
+          setIsBooped(true)
+        }
+
+        onMouseEnter?.(event)
+      }}
     >
-      {children}
-    </Comp>
+      {typeof children === 'function' ? children(isBooped) : children}
+      <span className='sr-only'>{label}</span>
+    </button>
   )
 }
 

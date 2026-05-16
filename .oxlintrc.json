@@ -1,4 +1,10 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["eslint", "typescript", "oxc", "jsx-a11y"]
+  "plugins": ["eslint", "typescript", "oxc", "jsx-a11y"],
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "plugins": ["react"]
+    }
+  ]
 }

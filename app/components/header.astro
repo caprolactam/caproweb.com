@@ -1,0 +1,48 @@
+---
+import { ToggleColorMode } from '#app/components/color-mode/color-mode.tsx';
+
+const ICON_SIZE = 24
+---
+<header class='sticky top-0 z-10 h-14 backdrop-blur-md'>
+  <div class='mx-auto h-full w-full max-w-3xl px-4 md:px-6'>
+    <div class="h-full flex items-center flex-nowrap gap-2 justify-between">
+      <a
+        href='/'
+        class='relative inline-flex h-10 shrink-0 items-center gap-1.5 text-xl font-normal font-mono'
+      >
+        <svg
+          viewBox='0 0 100 100'
+          width={ICON_SIZE}
+          height={ICON_SIZE}
+        >
+          <circle
+            cx='50'
+            cy='50'
+            r='48'
+            stroke-width='1.5'
+            stroke='#0066b3'
+            fill='white'
+          />
+          <circle cx='50' cy='50' r='43' stroke-width='0' fill='#0066b3' />
+          <path
+            d='
+              M 81.113,27.373
+              L 47.172,61.314
+              Q 82.527,65.556
+                23.130,76.870
+              Q 34.444,17.473
+                38.686,52.828
+              L 72.627,18.887
+              Z
+            '
+            stroke-width='0'
+            fill='white'
+          />
+        </svg>
+        caproweb
+        <div class='absolute inset-y-1/2 h-12 w-full -translate-y-1/2' />
+      </a>
+    <ToggleColorMode client:load />
+    </div>
+  </div>
+</header>
