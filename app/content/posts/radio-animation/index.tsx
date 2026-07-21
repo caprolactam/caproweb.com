@@ -1,6 +1,6 @@
-import { cn } from '#app/lib/utils.ts'
 import { RadioGroup as RadioGroupPrimitive } from 'radix-ui'
 import React from 'react'
+import { cn } from '#app/lib/utils.ts'
 import './styles.css'
 
 const frameworks = ['React Router', 'Next.js', 'TanStack Start'] as const

@@ -1,6 +1,6 @@
-import { cn } from '#app/lib/utils.ts'
 import { cva } from 'class-variance-authority'
 import type React from 'react'
+import { cn } from '#app/lib/utils.ts'
 import { Icon } from './icon.tsx'
 
 const filterChipVariants = cva(

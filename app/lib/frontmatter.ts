@@ -1,7 +1,7 @@
 // `astro:content`からのインポートをするとビルドサイズが大きくなるので`content`モジュールから分離
 import path from 'node:path'
-import { frontmatters as frontmatterList } from '#app/content/frontmatters.ts'
 import { z } from 'zod'
+import { frontmatters as frontmatterList } from '#app/content/frontmatters.ts'
 
 export const frontmatterSchema = z.object({
   title: z.string(),
