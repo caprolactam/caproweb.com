@@ -2,7 +2,7 @@ import cloudflare from '@astrojs/cloudflare'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'astro/config'
+import { defineConfig, svgoOptimizer } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 import remarkHeadingId from 'remark-custom-header-id'
@@ -25,10 +25,7 @@ export default defineConfig({
   experimental: {
     clientPrerender: true,
     contentIntellisense: true,
-    queuedRendering: {
-      enabled: true,
-    },
-    rustCompiler: true,
+    svgOptimizer: svgoOptimizer(),
   },
   markdown: {
     // do it manually
@@ -37,7 +34,7 @@ export default defineConfig({
     remarkRehype: {
       footnoteLabel: '脚注',
       footnoteLabelProperties: { className: undefined },
-      footnoteBackLabel: (referenceIndex, _rereferenceIndex) =>
+      footnoteBackLabel: (referenceIndex: number, _rereferenceIndex: number) =>
         `参照${referenceIndex + 1}に戻る`,
     },
     rehypePlugins: [
