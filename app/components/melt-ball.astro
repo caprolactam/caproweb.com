@@ -1,0 +1,141 @@
+---
+
+---
+
+<style>
+  #melt-ball {
+    display: block;
+    width: 300px;
+    height: 300px;
+  }
+</style>
+
+<canvas id="melt-ball"></canvas>
+
+<script>
+  import { createNoise2D } from "simplex-noise";
+  import { setupCanvas } from "#app/lib/canvas.ts";
+
+  // ---- パラメータ ----
+  const N = 72; // 制御点の数
+  const BASE_RADIUS = 100; // 基本半径 (CSS px)
+  const AMPLITUDE = 14; // ノイズによる半径変動幅 (px)
+  const SPATIAL_SCALE = 0.15; // ノイズサンプリング半径（小さいほど滑らか）
+  const TIME_SPEED = 0.00018; // 形状変化速度
+
+  // 色パラメータ — ベース色 #f0b96b ≈ oklch(0.80 0.12 72deg)
+  const COLOR_L_BASE = 0.8;
+  const COLOR_L_RANGE = 0.04; // ±で明度を揺らす
+  const COLOR_C_BASE = 0.12;
+  const COLOR_C_RANGE = 0.02; // ±で彩度を揺らす
+  const COLOR_H_BASE = 72; // 色相 (deg)
+  const COLOR_H_RANGE = 6; // ±で色相を揺らす
+  const COLOR_SPEED = 0.00008; // 色変化は形状より遅く
+
+  const ALPHA = 0.65; // 各ブロブの透過度。重なり部分は約 0.88 になる
+
+  // ---- ユーティリティ ----
+
+  function computePoints(
+    noise: ReturnType<typeof createNoise2D>,
+    t: number,
+    cx: number,
+    cy: number,
+  ): [number, number][] {
+    const points: [number, number][] = [];
+    for (let i = 0; i < N; i++) {
+      const theta = (2 * Math.PI * i) / N;
+      const cosT = Math.cos(theta);
+      const sinT = Math.sin(theta);
+      const r =
+        BASE_RADIUS +
+        noise(cosT * SPATIAL_SCALE, sinT * SPATIAL_SCALE + t * TIME_SPEED) *
+          AMPLITUDE;
+      points.push([cx + r * cosT, cy + r * sinT]);
+    }
+    return points;
+  }
+
+  /**
+   * Simplex ノイズ値 [-1, 1] を oklch() カラー文字列にマッピングする。
+   * oklch は知覚的に均一なため、ノイズの線形変化が自然な色変化に見える。
+   */
+  function getColor(
+    colorNoise: ReturnType<typeof createNoise2D>,
+    t: number,
+  ): string {
+    const n = colorNoise(0, t * COLOR_SPEED);
+    const l = COLOR_L_BASE + n * COLOR_L_RANGE;
+    const c = COLOR_C_BASE + n * COLOR_C_RANGE;
+    const h = COLOR_H_BASE + n * COLOR_H_RANGE;
+    return `oklch(${l} ${c} ${h})`;
+  }
+
+  /**
+   * Catmull-Rom → 三次ベジェ変換で閉曲線を描画。
+   */
+  function drawBlob(
+    ctx: CanvasRenderingContext2D,
+    points: [number, number][],
+    color: string,
+  ): void {
+    const n = points.length;
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const p0 = points[(i - 1 + n) % n];
+      const p1 = points[i];
+      const p2 = points[(i + 1) % n];
+      const p3 = points[(i + 2) % n];
+
+      if (i === 0) ctx.moveTo(p1[0], p1[1]);
+      ctx.bezierCurveTo(
+        p1[0] + (p2[0] - p0[0]) / 6,
+        p1[1] + (p2[1] - p0[1]) / 6,
+        p2[0] - (p3[0] - p1[0]) / 6,
+        p2[1] - (p3[1] - p1[1]) / 6,
+        p2[0],
+        p2[1],
+      );
+    }
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+
+  const canvas = document.getElementById("melt-ball") as HTMLCanvasElement;
+  const { ctx, canvasDimensions } = setupCanvas(canvas);
+
+  const cssW = canvas.offsetWidth;
+  const cssH = canvas.offsetHeight;
+
+  const cx = cssW / 2;
+  const cy = cssH / 2;
+
+  // ブロブ A・B それぞれ独立したノイズインスタンス
+  const noiseA = createNoise2D();
+  const colorNoiseA = createNoise2D();
+  const noiseB = createNoise2D();
+  const colorNoiseB = createNoise2D();
+
+  function draw(time: number) {
+    ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+    ctx!.save();
+    ctx!.globalAlpha = ALPHA;
+
+    drawBlob(
+      ctx!,
+      computePoints(noiseA, time, cx, cy),
+      getColor(colorNoiseA, time),
+    );
+    drawBlob(
+      ctx!,
+      computePoints(noiseB, time, cx, cy),
+      getColor(colorNoiseB, time),
+    );
+
+    ctx!.restore();
+    requestAnimationFrame(draw);
+  }
+
+  // draw(0);
+</script>
