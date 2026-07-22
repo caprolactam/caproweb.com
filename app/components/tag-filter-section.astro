@@ -1,0 +1,64 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { FilterChipLink } from "#app/components/ui/filter-chip.tsx";
+import { setSearchParamsString } from "#app/lib/tags.ts";
+
+interface Props extends HTMLAttributes<"section"> {
+  totalPosts: number;
+  tags: Array<{
+    title: string;
+    description: string;
+    image?: string;
+    slug: string;
+  }>;
+}
+const { totalPosts, posts, ...delegated } = Astro.props;
+---
+
+<style>
+  .heading {
+    font-size: var(--size-lg);
+    line-height: var(--line-height-lg);
+    font-weight: 700;
+
+    margin-bottom: var(--spacing-base);
+  }
+  @media (width >= 40rem) {
+    .heading {
+      font-size: var(--size-2xl);
+      line-height: var(--line-height-2xl);
+    }
+  }
+
+  .supporting {
+    display: block;
+    color: var(--sand-11);
+    font-size: var(--size-base);
+    line-height: var(--line-height-base);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 8px;
+  }
+</style>
+<section {...delegated}>
+  <span class="supporting">{`${totalPosts}件の投稿`}</span>
+  <h2 class="heading">ポスト</h2>
+  <ul>
+    {
+      posts.map(({ title, description, image, slug }) => (
+        <li>
+          <PostCard
+            title={title}
+            description={description}
+            url={`/contents/${slug}`}
+            imageSrc={image}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</section>

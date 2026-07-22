@@ -3,7 +3,12 @@ import { z } from 'astro/zod'
 import { defineCollection } from 'astro:content'
 
 const postCollection = defineCollection({
-  loader: glob({ base: './app/content/posts', pattern: '**/*.{md,mdx}' }),
+  loader: glob({
+    base: './app/content/posts',
+    pattern: '**/*.{md,mdx}',
+    retainBody: false,
+    deferRender: true,
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
