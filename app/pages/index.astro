@@ -1,79 +1,66 @@
 ---
-import Layout from "#app/components/layout.astro";
-import { FilterChipLink } from "#app/components/ui/filter-chip.tsx";
-import { listSortedFrontmatters } from "#app/lib/frontmatter.ts";
-import { setSearchParamsString } from "#app/lib/tags.ts";
-import PostSection from "#app/components/post-section.astro";
+import Layout from '#app/components/layout.astro'
+import PostSection from '#app/components/post-section.astro'
+import { FilterChipLink } from '#app/components/ui/filter-chip.tsx'
+import { listSortedFrontmatters } from '#app/lib/frontmatter.ts'
+import { setSearchParamsString } from '#app/lib/tags.ts'
+import {
+  sidebarContainer,
+  tagFilterSection,
+  contentsSection,
+} from './index.css.ts'
 
-const { url } = Astro;
-const queryTags = Array.from(new Set(url.searchParams.getAll("tag")));
+const { url } = Astro
+const queryTags = Array.from(new Set(url.searchParams.getAll('tag')))
 
-const allPosts = listSortedFrontmatters();
-const allTags = allPosts.toAllTags();
-const totalPosts = allPosts.toArray().length;
+const allPosts = listSortedFrontmatters()
+const allTags = allPosts.toAllTags()
+const totalPosts = allPosts.toArray().length
 
-const filteredPosts = allPosts.filteredByTags(queryTags);
-const selectablePosts = filteredPosts.toArray();
-const selectableTags = filteredPosts.toAllTags();
+const filteredPosts = allPosts.filteredByTags(queryTags)
+const selectablePosts = filteredPosts.toArray()
+const selectableTags = filteredPosts.toAllTags()
 
-export const prerender = false;
+export const prerender = false
 ---
 
-<style>
-  .sidebar-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: start;
-    gap: var(--spacing-base);
-  }
-
-  .tags-section {
-    flex: 1 1 20rem;
-  }
-
-  .content-list {
-    flex: 9999 1 0%;
-    min-width: 50%;
-  }
-</style>
-
-<Layout breadCrumbs={[{ label: "ホーム", href: "/" }]}>
-  <Fragment slot="head">
+<Layout breadCrumbs={[{ label: 'ホーム', href: '/' }]}>
+  <Fragment slot='head'>
     <title>ホーム | Capro Web</title>
-    <meta name="description" content="Web開発に関する反省" />
+    <meta name='description' content='Web開発に関する反省' />
   </Fragment>
-  <div class="sidebar-wrapper">
+  <div class={sidebarContainer}>
     <PostSection
-      class="content-list"
+      class={contentsSection}
       totalPosts={totalPosts}
       posts={selectablePosts}
     />
-    <section class="tags-section">
-      <ul class="flex flex-wrap items-center gap-2">
+    <section class={tagFilterSection}>
+      <ul class='flex flex-wrap items-center gap-2'>
         {
           allTags.map((tag) => {
             const searchParams = setSearchParamsString(url.searchParams, {
               tag,
-            });
-            const isChecked = queryTags.includes(tag);
-            const isDisabled = !selectableTags.includes(tag);
+            })
+            const isChecked = queryTags.includes(tag)
+            const isDisabled = !selectableTags.includes(tag)
 
             return (
               <li>
                 <FilterChipLink
                   checked={isChecked}
                   disabled={isDisabled}
-                  href={searchParams.length > 0 ? `?${searchParams}` : "/"}
-                  data-astro-prefetch="hover"
+                  href={searchParams.length > 0 ? `?${searchParams}` : '/'}
+                  data-astro-prefetch='hover'
                 >
                   {tag}
                 </FilterChipLink>
               </li>
-            );
+            )
           })
         }
         <li>
-          <FilterChipLink href="/" disabled={queryTags.length === 0}>
+          <FilterChipLink href='/' disabled={queryTags.length === 0}>
             クリア
           </FilterChipLink>
         </li>

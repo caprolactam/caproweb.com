@@ -3,6 +3,7 @@ import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import { defineConfig, svgoOptimizer } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
@@ -106,6 +107,7 @@ export default defineConfig({
           filePath,
         }),
       }),
+      vanillaExtractPlugin(),
     ],
   },
 })

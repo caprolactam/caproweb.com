@@ -10,7 +10,9 @@
 
   try {
     const themeInStorage = localStorage.getItem(STORAGE_KEY)
-    const theme = isValidTheme(themeInStorage) ? themeInStorage : getSystemTheme()
+    const theme = isValidTheme(themeInStorage)
+      ? themeInStorage
+      : getSystemTheme()
 
     updateDOM(theme)
   } catch {}

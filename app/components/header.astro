@@ -1,8 +1,10 @@
 ---
-import { ToggleColorMode } from "#app/components/color-mode/color-mode.tsx";
-import MeltBall from "./melt-ball.astro";
+import { ToggleColorMode } from '#app/components/color-mode/color-mode.tsx'
+import MeltBall from './melt-ball.astro'
 
-const ICON_SIZE = 24;
+const ICON_SIZE = 24
+
+const foo = 'bar'
 ---
 
 <style>
@@ -23,26 +25,26 @@ const ICON_SIZE = 24;
     }
   }
 </style>
-<div class="relative max-w-5xl mx-auto w-full">
-  <header class="sticky top-0 z-10 h-16 backdrop-blur-md">
-    <div class="mx-auto h-full w-full px-4 md:px-6">
-      <div class="h-full flex items-center flex-nowrap gap-2 justify-between">
+<div class='relative max-w-5xl mx-auto w-full'>
+  <header class='sticky top-0 z-10 h-16 backdrop-blur-md'>
+    <div class='mx-auto h-full w-full px-4 md:px-6'>
+      <div class='h-full flex items-center flex-nowrap gap-2 justify-between'>
         <a
-          href="/"
-          class="relative inline-flex h-10 shrink-0 items-center gap-1.5 text-xl font-normal font-mono"
+          href='/'
+          class='relative inline-flex h-10 shrink-0 items-center gap-1.5 text-xl font-normal font-mono'
         >
-          <svg viewBox="0 0 100 100" width={ICON_SIZE} height={ICON_SIZE}>
+          <svg viewBox='0 0 100 100' width={ICON_SIZE} height={ICON_SIZE}>
             <circle
-              cx="50"
-              cy="50"
-              r="48"
-              stroke-width="1.5"
-              stroke="#0066b3"
-              fill="white"></circle>
-            <circle cx="50" cy="50" r="43" stroke-width="0" fill="#0066b3"
+              cx='50'
+              cy='50'
+              r='48'
+              stroke-width='1.5'
+              stroke='#0066b3'
+              fill='white'></circle>
+            <circle cx='50' cy='50' r='43' stroke-width='0' fill='#0066b3'
             ></circle>
             <path
-              d="
+              d='
                 M 81.113,27.373
                 L 47.172,61.314
                 Q 82.527,65.556
@@ -51,12 +53,12 @@ const ICON_SIZE = 24;
                   38.686,52.828
                 L 72.627,18.887
                 Z
-              "
-              stroke-width="0"
-              fill="white"></path>
+              '
+              stroke-width='0'
+              fill='white'></path>
           </svg>
           caproweb
-          <div class="absolute inset-y-1/2 h-12 w-full -translate-y-1/2"></div>
+          <div class='absolute inset-y-1/2 h-12 w-full -translate-y-1/2'></div>
         </a>
         <ToggleColorMode client:load />
       </div>

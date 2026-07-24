@@ -29,11 +29,7 @@ const updatedAt = updatedAtProp ? formatDate(updatedAtProp) : null
     >
       {
         imageSrc ? (
-          <img
-            src={imageSrc}
-            alt={title}
-            class='size-full object-cover'
-          />
+          <img src={imageSrc} alt={title} class='size-full object-cover' />
         ) : (
           <Icon
             name='article'
@@ -43,19 +39,13 @@ const updatedAt = updatedAtProp ? formatDate(updatedAtProp) : null
       }
     </div>
     <div class='flex flex-1 flex-col gap-2'>
-      <h1
-        id={TITLE_ID}
-        class='text-lg font-bold sm:text-3xl'
-      >
+      <h1 id={TITLE_ID} class='text-lg font-bold sm:text-3xl'>
         {title}
       </h1>
       <div class='grid grid-cols-2 gap-2 text-sm md:gap-3'>
         <div class='grid'>
           投稿日
-          <time
-            datetime={publishedAt}
-            class='text-base'
-          >
+          <time datetime={publishedAt} class='text-base'>
             {publishedAt}
           </time>
         </div>
@@ -63,10 +53,7 @@ const updatedAt = updatedAtProp ? formatDate(updatedAtProp) : null
           updatedAt && (
             <div class='grid'>
               最終更新日
-              <time
-                datetime={updatedAt}
-                class='text-base'
-              >
+              <time datetime={updatedAt} class='text-base'>
                 {updatedAt}
               </time>
             </div>

@@ -1,17 +1,19 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-import PostCard from "./post-card.astro";
+import type { HTMLAttributes } from 'astro/types'
+import PostCard from './post-card.astro'
 
-interface Props extends HTMLAttributes<"section"> {
-  totalPosts: number;
+interface Props extends HTMLAttributes<'section'> {
+  totalPosts: number
   posts: Array<{
-    title: string;
-    description: string;
-    image?: string;
-    slug: string;
-  }>;
+    title: string
+    description: string
+    image?: string
+    slug: string
+  }>
 }
-const { totalPosts, posts, ...delegated } = Astro.props;
+
+const foo = 'foo'
+const { totalPosts, posts, class: className } = Astro.props
 ---
 
 <style>
@@ -36,9 +38,9 @@ const { totalPosts, posts, ...delegated } = Astro.props;
     line-height: var(--line-height-base);
   }
 </style>
-<section {...delegated}>
-  <span class="supporting">{`${totalPosts}件の投稿`}</span>
-  <h2 class="heading">ポスト</h2>
+<section class={className}>
+  <span class='supporting'>{`${totalPosts}件の投稿`}</span>
+  <h2 class='heading'>ポスト</h2>
   <ul>
     {
       posts.map(({ title, description, image, slug }) => (

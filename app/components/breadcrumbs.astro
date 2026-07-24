@@ -1,12 +1,12 @@
 ---
-import { Icon } from "./ui/icon.tsx";
+import { Icon } from './ui/icon.tsx'
 
 export interface Props {
-  class?: string;
-  links: Array<{ label: string; href: string }>;
+  class?: string
+  links: Array<{ label: string; href: string }>
 }
 
-const { links } = Astro.props;
+const { links } = Astro.props
 ---
 
 <style>
@@ -30,14 +30,14 @@ const { links } = Astro.props;
   li a {
     position: relative;
 
-    &:not([aria-current="page"]):hover {
+    &:not([aria-current='page']):hover {
       text-underline-offset: 2px;
       text-decoration: underline;
     }
 
     &::before {
       position: absolute;
-      content: "";
+      content: '';
       height: 44px;
       inset: 50% 0;
       transform: translateY(-50%);
@@ -53,19 +53,19 @@ const { links } = Astro.props;
     display: none;
   }
 </style>
-<nav aria-label="パンくずリスト">
+<nav aria-label='パンくずリスト'>
   <ol>
     {
       links.map(({ label, href }, index) => {
-        const isLast = index === links.length - 1;
+        const isLast = index === links.length - 1
         return (
           <li>
-            <a href={href} aria-current={isLast ? "page" : undefined}>
+            <a href={href} aria-current={isLast ? 'page' : undefined}>
               {label}
             </a>
-            <Icon name="navigate-next-thin" size={20} />
+            <Icon name='navigate-next-thin' size={20} />
           </li>
-        );
+        )
       })
     }
   </ol>

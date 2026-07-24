@@ -1,9 +1,9 @@
 ---
-import X from "./brand-icons/x.svg";
-import Github from "./brand-icons/github.svg";
-import VisuallyHidden from "./visually-hidden.astro";
+import Github from './brand-icons/github.svg'
+import X from './brand-icons/x.svg'
+import VisuallyHidden from './visually-hidden.astro'
 
-const currentYear = new Date().getFullYear();
+const currentYear = new Date().getFullYear()
 ---
 
 <style>
@@ -45,12 +45,12 @@ const currentYear = new Date().getFullYear();
   }
 </style>
 <footer>
-  <span class="author">{`© ${currentYear} caprolactam`}</span>
-  <a href="https://github.com/caprolactam" class="sns-link">
+  <span class='author'>{`© ${currentYear} caprolactam`}</span>
+  <a href='https://github.com/caprolactam' class='sns-link'>
     <VisuallyHidden>著者のGitHubアカウント</VisuallyHidden>
     <Github width={24} height={24} />
   </a>
-  <a href="https://x.com/derivesfrom" class="sns-link">
+  <a href='https://x.com/derivesfrom' class='sns-link'>
     <VisuallyHidden>著者のXアカウント</VisuallyHidden>
     <X width={18} height={18} />
   </a>

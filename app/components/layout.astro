@@ -1,17 +1,17 @@
 ---
-import BreadCrumbs from "#app/components/breadcrumbs.astro";
-import type { Props as BreadCrumbsProps } from "#app/components/breadcrumbs.astro";
-import Footer from "#app/components/footer.astro";
-import ThemeScript from "#app/components/color-mode/script.astro";
-import Header from "./header.astro";
+import BreadCrumbs from '#app/components/breadcrumbs.astro'
+import type { Props as BreadCrumbsProps } from '#app/components/breadcrumbs.astro'
+import ThemeScript from '#app/components/color-mode/script.astro'
+import Footer from '#app/components/footer.astro'
+import Header from './header.astro'
 
-import "#app/styles/tailwind.css";
+import '#app/styles/tailwind.css'
 
 interface Props {
-  breadCrumbs?: BreadCrumbsProps["links"];
+  breadCrumbs?: BreadCrumbsProps['links']
 }
 
-const { breadCrumbs } = Astro.props;
+const { breadCrumbs } = Astro.props
 ---
 
 <style>
@@ -40,37 +40,37 @@ const { breadCrumbs } = Astro.props;
   }
 </style>
 
-<html lang="ja" class="bg-brand-1 text-brand-12 antialiased">
+<html lang='ja' class='bg-brand-1 text-brand-12 antialiased'>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="referrer" content="no-referrer" />
-    <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <meta name='referrer' content='no-referrer' />
+    <link rel='apple-touch-icon' href='/favicons/apple-touch-icon.png' />
     <link
-      rel="icon"
-      type="image/svg+xml"
-      sizes="any"
-      href="/favicons/favicon.svg"
+      rel='icon'
+      type='image/svg+xml'
+      sizes='any'
+      href='/favicons/favicon.svg'
     />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta name="generator" content={Astro.generator} />
+    <link rel='manifest' href='/manifest.json' />
+    <link rel='sitemap' href='/sitemap-index.xml' />
+    <meta name='generator' content={Astro.generator} />
     <ThemeScript />
-    <slot name="head" />
+    <slot name='head' />
   </head>
-  <body class="flex min-h-screen flex-col">
+  <body class='flex min-h-screen flex-col'>
     <Header />
-    <main class="max-width-wrapper">
+    <main class='max-width-wrapper'>
       <slot />
     </main>
     {
       breadCrumbs && (
-        <div class="max-width-wrapper no-shrink">
+        <div class='max-width-wrapper no-shrink'>
           <BreadCrumbs links={breadCrumbs} />
         </div>
       )
     }
-    <div class="max-width-wrapper no-shrink">
+    <div class='max-width-wrapper no-shrink'>
       <Footer />
     </div>
   </body>

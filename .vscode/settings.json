@@ -1,10 +1,12 @@
 {
-  "[markdown]": {
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-    "editor.formatOnSave": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
   },
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.mdx": "markdown"
   },
-  "tailwindCSS.experimental.configFile": "app/styles/tailwind.css"
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode",
+    "editor.formatOnSave": true
+  }
 }
