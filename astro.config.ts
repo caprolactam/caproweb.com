@@ -2,16 +2,16 @@ import cloudflare from '@astrojs/cloudflare'
 import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
+import postcssGlobalData from '@csstools/postcss-global-data'
 import tailwindcss from '@tailwindcss/vite'
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import { defineConfig, svgoOptimizer } from 'astro/config'
+import autoPrefixer from 'autoprefixer'
+import customMediaQuery from 'postcss-custom-media'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSlug from 'rehype-slug'
 import remarkHeadingId from 'remark-custom-header-id'
 import { iconsSpritesheet } from 'vite-plugin-icons-spritesheet'
-import { z } from 'zod'
 import { rehypeCodeHighlight } from './scripts/custom-syntax-highlighter.ts'
-import { frontmatterExport } from './scripts/get-frontmatter.ts'
 
 export default defineConfig({
   site: 'https://caproweb.com',
@@ -77,6 +77,24 @@ export default defineConfig({
     ssr: {
       external: ['node:path'],
     },
+    css: {
+      transformer: 'postcss',
+      modules: {
+        localsConvention: 'camelCaseOnly',
+        generateScopedName: import.meta.env.PROD
+          ? '[hash:base64:7]'
+          : '[name]__[local]__[hash:base64:5]',
+      },
+      postcss: {
+        plugins: [
+          postcssGlobalData({
+            files: ['./app/styles/app.css'],
+          }),
+          customMediaQuery(),
+          autoPrefixer(),
+        ],
+      },
+    },
     plugins: [
       tailwindcss(),
       iconsSpritesheet({
@@ -87,27 +105,6 @@ export default defineConfig({
         fileName: 'sprite.svg',
         iconNameTransformer: (name) => name,
       }),
-      frontmatterExport({
-        inputDir: './app/content/posts',
-        output: {
-          dir: './app/content',
-          fileName: 'frontmatters.ts',
-        },
-        checkValue: z.object({
-          title: z.string(),
-          description: z.string().optional(),
-          publishedAt: z.coerce.date(),
-          updatedAt: z.coerce.date().optional(),
-          tags: z.array(z.string()).optional(),
-          image: z.string().optional(),
-          isDraft: z.boolean(),
-        }),
-        transform: ({ frontmatter, filePath }) => ({
-          ...frontmatter,
-          filePath,
-        }),
-      }),
-      vanillaExtractPlugin(),
     ],
   },
 })

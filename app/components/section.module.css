@@ -1,0 +1,16 @@
+.heading {
+  font-size: var(--text-2xl);
+  line-height: var(--line-height-2xl);
+  font-weight: 400;
+
+  &:has(+ :not(.supporting)) {
+    margin-bottom: var(--spacing-base);
+  }
+}
+
+.supporting {
+  display: block;
+  color: var(--color-muted-text);
+  font-size: var(--text-base);
+  line-height: var(--line-height-base);
+}

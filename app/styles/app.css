@@ -1,0 +1,83 @@
+@layer reset, theme, base;
+
+@import './reset.css' layer(reset);
+
+@import '@radix-ui/colors/sand.css';
+@import '@radix-ui/colors/sand-dark.css';
+
+@custom-media --tablet-and-up (width >= 31.25rem);
+@custom-media --laptop-and-up (width >= 68.75rem);
+@custom-media --desktop-and-up (width >= 93.75rem);
+@custom-media --tablet-only (width >= 31.25rem) and (width < 68.75rem);
+@custom-media --laptop-only (width >= 68.75rem) and (width < 93.75rem);
+
+@font-face {
+  font-family: 'Cascadia Mono';
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+  src: url('/fonts/cascadia-mono-latin-roman-variable.woff2') format('woff2');
+}
+
+@layer theme {
+  :root {
+    --color-text: var(--sand-12);
+    --color-muted-text: var(--sand-11);
+    --color-app-background: var(--sand-1);
+    --color-background: var(--sand-3);
+    --color-border: var(--sand-6);
+    --color-link: hsl(208, 88%, 43%);
+
+    /** Typography */
+    --font-sans: sans-serif;
+    --font-mono: 'Cascadia Mono', monospace;
+
+    --text-sm: 0.875rem;
+    --line-height-sm: 1.25;
+
+    --text-base: 1rem;
+    --line-height-base: 1.5;
+
+    --text-lg: 1.125rem;
+    --line-height-lg: 1.55;
+
+    --text-xl: 1.25rem;
+    --line-height-xl: 1.4;
+
+    --text-2xl: 1.5rem;
+    --line-height-2xl: 1.333;
+
+    --spacing-base: 16px;
+    --layout-margin-inline: var(--spacing-base);
+
+    &.dark {
+      --color-link: hsl(210, 100%, 72%);
+    }
+
+    @media (--laptop-and-up) {
+      --spacing-base: 24px;
+    }
+  }
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background-color: var(--color-app-background);
+  }
+
+  [role='button'],
+  button {
+    cursor: pointer;
+  }
+
+  a {
+    text-underline-offset: 2px;
+    color: var(--color-link);
+  }
+
+  code {
+    font-family: 'Cascadia Mono', monospace;
+  }
+}

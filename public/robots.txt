@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://caproweb.com/sitemap-index.xml

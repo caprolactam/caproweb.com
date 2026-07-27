@@ -1,50 +1,83 @@
 ---
-import BreadCrumbs from '#app/components/breadcrumbs.astro'
-import type { Props as BreadCrumbsProps } from '#app/components/breadcrumbs.astro'
-import ThemeScript from '#app/components/color-mode/script.astro'
-import Footer from '#app/components/footer.astro'
+import Breadcrumb from './breadcrumb.astro'
+import type { Props as BreadcrumbProps } from './breadcrumb.astro'
+import ThemeScript from './color-mode/script.astro'
+import Footer from './footer.astro'
 import Header from './header.astro'
 
-import '#app/styles/tailwind.css'
+import '#app/styles/app.css'
 
 interface Props {
-  breadCrumbs?: BreadCrumbsProps['links']
+  breadcrumb?: BreadcrumbProps['links']
 }
 
-const { breadCrumbs } = Astro.props
+const { breadcrumb } = Astro.props
 ---
 
 <style>
-  .no-shrink {
-    flex: 0 0 auto;
+  #root {
+    --max-content-inline-size: 64rem;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      '. content .'
+      '. breadcrumb .'
+      '. footer .';
+    grid-template-columns:
+      1fr
+      min(
+        calc(100% - var(--layout-margin-inline) * 2),
+        var(--max-content-inline-size)
+      )
+      1fr;
+    grid-template-rows: auto 1fr auto auto;
+    min-height: 100dvh;
   }
 
-  .max-width-wrapper {
-    width: 100%;
-    max-width: 64rem;
-    margin-inline: auto;
-    padding-inline: var(--layout-margin);
+  .header-wrapper {
+    grid-area: header;
+    display: grid;
+    grid-template-columns: subgrid;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--color-app-background);
+    /** TODO: background imageを追加 */
+  }
+
+  .centering-header {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    /* width: 100%; */
+  }
+
+  .sticky {
+    grid-column: 2 / -2;
   }
 
   main {
-    flex: 1 1 0%;
-    min-width: 0px;
     margin-block: 32px;
   }
 
-  @media (width >= 48rem) {
+  @media (--tablet-and-up) {
     main {
       margin-top: 48px;
       margin-bottom: 144px;
     }
   }
 </style>
-
-<html lang='ja' class='bg-brand-1 text-brand-12 antialiased'>
+<html lang='ja'>
   <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1' />
     <meta name='referrer' content='no-referrer' />
+    <link
+      rel='preload'
+      as='font'
+      href='/fonts/cascadia-mono-latin-roman-variable.woff2'
+      crossorigin='anonymous'
+    />
     <link rel='apple-touch-icon' href='/favicons/apple-touch-icon.png' />
     <link
       rel='icon'
@@ -54,24 +87,32 @@ const { breadCrumbs } = Astro.props
     />
     <link rel='manifest' href='/manifest.json' />
     <link rel='sitemap' href='/sitemap-index.xml' />
-    <meta name='generator' content={Astro.generator} />
-    <ThemeScript />
     <slot name='head' />
+    <ThemeScript />
+    <meta name='generator' content={Astro.generator} />
   </head>
-  <body class='flex min-h-screen flex-col'>
-    <Header />
-    <main class='max-width-wrapper'>
-      <slot />
-    </main>
-    {
-      breadCrumbs && (
-        <div class='max-width-wrapper no-shrink'>
-          <BreadCrumbs links={breadCrumbs} />
+  <body>
+    <div id='root'>
+      <div class='header-wrapper'>
+        <div class='sticky'>
+          <div class='centering-header'>
+            <Header />
+          </div>
         </div>
-      )
-    }
-    <div class='max-width-wrapper no-shrink'>
-      <Footer />
+      </div>
+      <main style={{ gridArea: 'content' }}>
+        <slot />
+      </main>
+      {
+        breadcrumb && (
+          <div style={{ gridArea: 'breadcrumb' }}>
+            <Breadcrumb links={breadcrumb} />
+          </div>
+        )
+      }
+      <div style={{ gridArea: 'footer' }}>
+        <Footer />
+      </div>
     </div>
   </body>
 </html>

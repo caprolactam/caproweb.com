@@ -1,0 +1,57 @@
+---
+import { Icon } from './ui/icon.tsx'
+
+export interface Props {
+  class?: string
+  links: Array<{ label: string; href: string }>
+}
+
+const { links } = Astro.props
+---
+
+<style>
+  ol {
+    display: flex;
+    min-width: 0px;
+    min-height: 44px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  li {
+    display: inline-flex;
+    align-items: center;
+
+    font-size: var(--text-base);
+    line-height: var(--line-height-base);
+    color: var(--color-text);
+  }
+
+  li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  li :global(svg) {
+    /* pixel alignment */
+    transform: translate(2px, 1px);
+  }
+</style>
+<nav aria-label='パンくずリスト'>
+  <ol>
+    {
+      links.map(({ label, href }, index) => {
+        const isLast = index === links.length - 1
+        return isLast ? (
+          <li>{label}</li>
+        ) : (
+          <li>
+            <a href={href}>{label}</a>
+            <Icon name='navigate-next-thin' size={24} />
+          </li>
+        )
+      })
+    }
+  </ol>
+</nav>

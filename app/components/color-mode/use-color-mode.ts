@@ -93,9 +93,7 @@ function updateDOM(newColorMode: ColorMode) {
 function disableTransition() {
   const css = document.createElement('style')
   css.appendChild(
-    document.createTextNode(
-      `*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}`,
-    ),
+    document.createTextNode(`*,*::before,*::after{transition:none!important}`),
   )
   document.head.appendChild(css)
 

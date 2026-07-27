@@ -1,0 +1,32 @@
+---
+import CoverImage from './image.astro'
+import styles from './styles.module.css'
+
+type Props = {
+  title: string
+  description: string
+  url: string
+  cover: {
+    src: string
+    width: number
+    height: number
+    format: 'png' | 'jpg' | 'jpeg' | 'tiff' | 'webp' | 'gif' | 'svg' | 'avif'
+  }
+  coverAlt: string
+}
+
+const { title, description, url, cover, coverAlt } = Astro.props
+---
+
+<li>
+  <article class={styles.article}>
+    <a href={url} class={styles.headingWrapper}
+      ><h3 class={styles.heading}>{title}</h3></a
+    >
+    <div class={styles.coverImageWrapper}>
+      <CoverImage {...cover} alt={coverAlt} />
+    </div>
+    <p class={styles.description}>{description}</p>
+    <a href={url} class={styles.linkMore}>記事を読む</a>
+  </article>
+</li>

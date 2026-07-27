@@ -5,7 +5,7 @@ publishedAt: 2024-09-27
 tags:
   - remix
   - web
-image: /images/sitemap.svg
+image: ./sitemap.svg
 isDraft: false
 ---
 

@@ -1,71 +1,36 @@
 ---
+import SiteLogo from '#app/components/brand-icons/my-site.svg'
 import { ToggleColorMode } from '#app/components/color-mode/color-mode.tsx'
-import MeltBall from './melt-ball.astro'
 
 const ICON_SIZE = 24
-
-const foo = 'bar'
 ---
 
+<header>
+  <a href='/' class='site-link'>
+    <SiteLogo width={ICON_SIZE} height={ICON_SIZE} />
+    caproweb
+  </a>
+  <ToggleColorMode client:load />
+</header>
 <style>
-  .swoop {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 12px;
-    background: linear-gradient(180deg, rgba(11, 11, 11, 0) 0%, #fff 100%);
-    clip-path: ellipse(150% 100% at 50% 100%);
-    transform: translateY(50%);
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
   }
 
-  @keyframes swoop {
-    to {
-      transform: translateX(100%) skewX(-20deg);
-    }
+  .site-link {
+    display: inline-flex;
+    align-items: center;
+    text-transform: uppercase;
+    gap: 8px;
+    height: 48px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+    font-weight: 350;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--color-text);
   }
 </style>
-<div class='relative max-w-5xl mx-auto w-full'>
-  <header class='sticky top-0 z-10 h-16 backdrop-blur-md'>
-    <div class='mx-auto h-full w-full px-4 md:px-6'>
-      <div class='h-full flex items-center flex-nowrap gap-2 justify-between'>
-        <a
-          href='/'
-          class='relative inline-flex h-10 shrink-0 items-center gap-1.5 text-xl font-normal font-mono'
-        >
-          <svg viewBox='0 0 100 100' width={ICON_SIZE} height={ICON_SIZE}>
-            <circle
-              cx='50'
-              cy='50'
-              r='48'
-              stroke-width='1.5'
-              stroke='#0066b3'
-              fill='white'></circle>
-            <circle cx='50' cy='50' r='43' stroke-width='0' fill='#0066b3'
-            ></circle>
-            <path
-              d='
-                M 81.113,27.373
-                L 47.172,61.314
-                Q 82.527,65.556
-                  23.130,76.870
-                Q 34.444,17.473
-                  38.686,52.828
-                L 72.627,18.887
-                Z
-              '
-              stroke-width='0'
-              fill='white'></path>
-          </svg>
-          caproweb
-          <div class='absolute inset-y-1/2 h-12 w-full -translate-y-1/2'></div>
-        </a>
-        <ToggleColorMode client:load />
-      </div>
-    </div>
-  </header>
-  <!-- <div class="swoop"></div>
-  <div class="w-full flex justify-end">
-    <MeltBall />
-  </div> -->
-</div>

@@ -1,0 +1,17 @@
+.list {
+  list-style: none;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.link {
+  padding: 4px 8px;
+  border-radius: 0.5rem;
+  font-size: var(--text-lg);
+  line-height: var(--line-height-lg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+}
