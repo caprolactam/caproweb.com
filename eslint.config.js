@@ -7,6 +7,9 @@ export default [
   {
     files: ['**/*.astro'],
     ...js.configs.recommended,
+    rules: {
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
   },
   {
     files: ['**/*.astro'],

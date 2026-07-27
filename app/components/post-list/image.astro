@@ -2,27 +2,27 @@
 import { Image } from 'astro:assets'
 
 type Props = {
-  src: string
-  width: number
-  height: number
-  format: 'png' | 'jpg' | 'jpeg' | 'tiff' | 'webp' | 'gif' | 'svg' | 'avif'
+  cover: {
+    src: string
+    width: number
+    height: number
+    format: 'png' | 'jpg' | 'jpeg' | 'tiff' | 'webp' | 'gif' | 'svg' | 'avif'
+  }
   alt: string
 }
 
-const { alt, ...props } = Astro.props
+const { alt, cover } = Astro.props
 
-const isSvg = props.format === 'svg'
-
-let svgComponent: any = null
-if (isSvg) {
-  svgComponent = (await import(/* @vite-ignore */ `${props.src}&raw`)).default
-}
+// svg形式の場合、content layerはcoverフィールドをそのままレンダリング可能な
+// Astroコンポーネントとして解決するので、それを描画してsvgをインライン展開する
+const isSvgComponent = typeof cover === 'function'
+const SvgIcon = cover as unknown as (props: Record<string, unknown>) => unknown
 ---
 
 {
-  svgComponent ? (
-    <Fragment set:html={svgComponent} />
+  isSvgComponent ? (
+    <SvgIcon role='img' aria-label={alt} />
   ) : (
-    <Image src={props} alt={alt} />
+    <Image src={cover} alt={alt} />
   )
 }

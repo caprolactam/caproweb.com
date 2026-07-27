@@ -14,5 +14,3 @@ export const QUERIES = {
   touchScreenOnly: `(hover: none) and (pointer: coarse)`,
   prefersMotion: `(prefers-reduced-motion: no-preference)`,
 } as const
-
-const foo = 'foo'

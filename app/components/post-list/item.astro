@@ -24,7 +24,7 @@ const { title, description, url, cover, coverAlt } = Astro.props
       ><h3 class={styles.heading}>{title}</h3></a
     >
     <div class={styles.coverImageWrapper}>
-      <CoverImage {...cover} alt={coverAlt} />
+      <CoverImage cover={cover} alt={coverAlt} />
     </div>
     <p class={styles.description}>{description}</p>
     <a href={url} class={styles.linkMore}>記事を読む</a>
