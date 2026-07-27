@@ -2,7 +2,6 @@ import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import postcssGlobalData from '@csstools/postcss-global-data'
-import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, svgoOptimizer } from 'astro/config'
 import autoPrefixer from 'autoprefixer'
 import customMediaQuery from 'postcss-custom-media'
@@ -80,7 +79,6 @@ export default defineConfig({
       },
     },
     plugins: [
-      tailwindcss(),
       iconsSpritesheet({
         withTypes: true,
         inputDir: './svg-icons',
