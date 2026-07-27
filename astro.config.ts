@@ -1,4 +1,3 @@
-import cloudflare from '@astrojs/cloudflare'
 import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
@@ -16,9 +15,6 @@ import { rehypeCodeHighlight } from './scripts/custom-syntax-highlighter.ts'
 export default defineConfig({
   site: 'https://caproweb.com',
   output: 'static',
-  adapter: cloudflare({
-    configPath: './wrangler.jsonc',
-  }),
   prefetch: {
     defaultStrategy: 'viewport',
     prefetchAll: true,
@@ -65,18 +61,6 @@ export default defineConfig({
   },
   integrations: [react(), mdx()],
   vite: {
-    resolve: {
-      // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
-      // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
-      alias: import.meta.env.PROD
-        ? {
-            'react-dom/server': 'react-dom/server.edge',
-          }
-        : undefined,
-    },
-    ssr: {
-      external: ['node:path'],
-    },
     css: {
       transformer: 'postcss',
       modules: {
